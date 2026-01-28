@@ -10,11 +10,15 @@ interface GlobalWithMongo {
 
 declare const global: GlobalWithMongo;
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('MONGODB_URI is not defined in environment variables');
-}
+// Delayed initialization - check at runtime, not build time
+const getUri = () => {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error('MONGODB_URI is not defined in environment variables');
+  }
+  return uri;
+};
 
-const uri = process.env.MONGODB_URI;
 const options = {
   maxPoolSize: 10,
   minPoolSize: 2,
@@ -33,6 +37,8 @@ let client: MongoClient;
 let db: Db;
 
 async function connectDB(): Promise<{ client: MongoClient; db: Db }> {
+  // Get URI at runtime
+  const uri = getUri();
   // In development or if not cached, create new connection
   if (!global.mongo) {
     client = new MongoClient(uri, options);
