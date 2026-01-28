@@ -61,6 +61,10 @@ async function connectDB(): Promise<{ client: MongoClient; db: Db }> {
     }
   }
 
+  if (!global.mongo) {
+    throw new Error('Failed to connect to MongoDB');
+  }
+
   return {
     client: global.mongo.client,
     db: global.mongo.db,
