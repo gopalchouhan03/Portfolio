@@ -40,20 +40,20 @@ export async function POST(request: NextRequest) {
 
     // Increment both global and daily counts
     await collection.updateOne(
-      { _id: 'global' },
+      { type: 'global' },
       { $inc: { count: 1 }, $set: { updatedAt: new Date() } },
       { upsert: true }
     );
 
     await collection.updateOne(
-      { _id: `daily-${today}` },
+      { type: 'daily', date: today },
       { $inc: { count: 1 }, $set: { updatedAt: new Date() } },
       { upsert: true }
     );
 
     visitTracker.set(ip, Date.now());
 
-    const globalStats = (await collection.findOne({ _id: 'global' })) as VisitorStats;
+    const globalStats = (await collection.findOne({ type: 'global' })) as VisitorStats;
 
     return NextResponse.json(
       {
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const collection = await getCollection('visitor-count');
-    const globalStats = (await collection.findOne({ _id: 'global' })) as VisitorStats | null;
+    const globalStats = (await collection.findOne({ type: 'global' })) as VisitorStats | null;
 
     return NextResponse.json(
       {
