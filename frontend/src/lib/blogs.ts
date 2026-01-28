@@ -13,7 +13,7 @@ MERN is not just about knowing React or Node separately. It is about how differe
 - Node + Express expose APIs
 - MongoDB manages structured and indexed data
 - Middleware handles auth, logging, validation
-- DevOps handles deployment and scaling
+- DevOps handles deployment and scaling projects
 
 Understanding responsibility is more important than syntax.
 
