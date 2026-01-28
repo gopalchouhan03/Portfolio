@@ -89,8 +89,9 @@ export async function getGitHubContributions(
   // Try to get from cache
   if (!forceRefresh) {
     const cached = await collection.findOne({ type: 'contributions' });
-    if (cached && new Date(cached.expiresAt) > new Date()) {
-      return cached as GitHubContributionData;
+    if (cached && cached.expiresAt && new Date(cached.expiresAt as Date) > new Date()) {
+      const { _id, ...data } = cached;
+      return data as GitHubContributionData;
     }
   }
 
