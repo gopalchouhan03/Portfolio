@@ -28,10 +28,10 @@ function isRateLimited(key: string): boolean {
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectId = params.id;
+    const { id: projectId } = await params;
     const ip = request.headers.get('x-forwarded-for') || 'unknown';
     const rateLimitKey = getRateLimitKey(projectId, ip);
 
@@ -88,10 +88,10 @@ export async function POST(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectId = params.id;
+    const { id: projectId } = await params;
     const collection = await getCollection('project-stats');
 
     const stats = (await collection.findOne({ projectId })) as ProjectStats | null;

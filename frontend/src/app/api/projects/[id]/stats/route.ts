@@ -11,10 +11,10 @@ import { ProjectStats, ApiResponse } from '@/types';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectId = params.id;
+    const { id: projectId } = await params;
     const collection = await getCollection('project-stats');
 
     const stats = (await collection.findOne({ projectId })) as ProjectStats | null;
@@ -46,10 +46,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectId = params.id;
+    const { id: projectId } = await params;
     const collection = await getCollection('project-stats');
 
     // Increment view count
