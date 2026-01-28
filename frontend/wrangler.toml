@@ -4,4 +4,16 @@ pages_build_output_dir = "out"
 [build]
 command = "npm run build"
 
+[[kv_namespaces]]
+binding = "PORTFOLIO_KV"
+id = "your_kv_namespace_id"
+preview_id = "your_preview_kv_namespace_id"
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[[env.production.kv_namespaces]]
+binding = "PORTFOLIO_KV"
+id = "your_kv_namespace_id"
+
 
