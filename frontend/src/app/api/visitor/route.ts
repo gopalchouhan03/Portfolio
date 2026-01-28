@@ -53,7 +53,18 @@ export async function POST(request: NextRequest) {
 
     visitTracker.set(ip, Date.now());
 
-    const globalStats = (await collection.findOne({ type: 'global' })) as VisitorStats;
+    const globalStats = (await collection.findOne({ type: 'global' })) as VisitorStats | null;
+
+    if (!globalStats) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Failed to record visit',
+          timestamp: new Date(),
+        } as ApiResponse<null>,
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
       {
