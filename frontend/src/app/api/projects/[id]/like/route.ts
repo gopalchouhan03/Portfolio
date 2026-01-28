@@ -56,6 +56,10 @@ export async function POST(
       { upsert: true, returnDocument: 'after' }
     );
 
+    if (!result || !result.value) {
+      throw new Error('Failed to update project stats');
+    }
+
     const stats = result.value as ProjectStats;
 
     // Record rate limit
