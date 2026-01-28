@@ -7,7 +7,7 @@ export default function CustomCursor() {
   const innerRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef<HTMLDivElement>(null);
   const isPointerRef = useRef(false);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     let mouseX = 0;
