@@ -1,10 +1,8 @@
-#:schema node_modules/wrangler/config-schema.json
 name = "portfolio"
 type = "javascript"
-pages_build_output_dir = ".next/standalone"
+pages_build_output_dir = ".next"
 
 [build]
 command = "npm run build"
-cwd = "./"
-watch_paths = ["src/**/*.ts", "src/**/*.tsx"]
+
 
