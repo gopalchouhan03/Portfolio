@@ -2,11 +2,5 @@
   "version": 1,
   "include": [
     "/*"
-  ],
-  "exclude": [
-    "/Logo.png",
-    "/Gopal_Chouhan_Full_Stack_Developer_Resume.pdf",
-    "/blogs/*",
-    "/images/*"
   ]
 }
