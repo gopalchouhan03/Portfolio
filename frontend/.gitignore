@@ -16,6 +16,7 @@
 # next.js
 /.next/
 /out/
+.next/
 
 # production
 /build
@@ -49,3 +50,8 @@ next-env.d.ts
 *.swo
 *~
 .DS_Store
+
+# Cloudflare
+*.db
+.wrangler/
+dist/
