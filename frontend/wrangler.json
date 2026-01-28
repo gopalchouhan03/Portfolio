@@ -1,4 +1,4 @@
 {
   "name": "portfolio",
-  "pages_build_output_dir": ".next"
+  "pages_build_output_dir": ".next/static"
 }
