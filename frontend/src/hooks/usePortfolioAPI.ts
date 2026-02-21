@@ -102,10 +102,39 @@ export function useGitHubContributions() {
       try {
         const response = await fetch(`${API_BASE_URL}/api/github/contributions`);
         const result = await response.json();
-        
+
         if (result.success) {
-          // compute simple stats: last 7 and 30 days sums if contributions provided
-          const contributions = result.data?.contributions || [];
+          // Backend may return `weeks` (GitHub GraphQL calendar) or a pre-flattened `contributions` array.
+          let contributions: Array<any> = [];
+
+          // Helper to map count -> heatmap level (keep in sync with lib/github.ts)
+          const getContributionLevel = (count: number): 0 | 1 | 2 | 3 | 4 => {
+            if (count === 0) return 0;
+            if (count <= 5) return 1;
+            if (count <= 10) return 2;
+            if (count <= 20) return 3;
+            return 4;
+          };
+
+          if (Array.isArray(result.data?.contributions) && result.data.contributions.length > 0) {
+            contributions = result.data.contributions.map((d: any) => ({
+              date: d.date,
+              count: d.count || 0,
+              level: d.level ?? getContributionLevel(d.count || 0),
+            }));
+          } else if (Array.isArray(result.data?.weeks)) {
+            // Convert weeks -> flat list of days
+            contributions = (result.data.weeks || [])
+              .flatMap((week: any) =>
+                (week.contributionDays || []).map((day: any) => ({
+                  date: day.date,
+                  count: day.contributionCount || 0,
+                  level: getContributionLevel(day.contributionCount || 0),
+                }))
+              )
+              .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          }
+
           const today = new Date();
           const last7 = contributions
             .filter((c: any) => {
@@ -120,7 +149,7 @@ export function useGitHubContributions() {
             })
             .reduce((s: number, c: any) => s + (c.count || 0), 0);
 
-          const withStats = { ...(result.data || {}), stats: { last7Days: last7, last30Days: last30 } };
+          const withStats = { ...(result.data || {}), contributions, stats: { last7Days: last7, last30Days: last30 } };
           setData(withStats);
         } else {
           setError(result.error || 'Failed to fetch GitHub data');
