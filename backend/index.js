@@ -6,7 +6,16 @@ const { JSONFile } = require('lowdb/node');
 const { MongoClient } = require('mongodb');
 
 const app = express();
-app.use(cors());
+
+// CORS configuration for portfolio domain
+const corsOptions = {
+  origin: ['http://localhost:3000', 'http://localhost:5000', 'https://portfolio-y6q9.onrender.com', 'https://gopalchouhan.com'],
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'x-admin-secret'],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
@@ -49,12 +58,16 @@ app.get('/visitor-count', async (req, res) => {
   try {
     if (visitorsCollection) {
       const doc = await visitorsCollection.findOne({ _id: 'visitors' });
-      return res.json({ count: doc?.count || 0 });
+      const count = doc?.count || 0;
+      console.log(`[GET /visitor-count] MongoDB: returning count = ${count}`);
+      return res.json({ count, source: 'mongodb' });
     }
     await lowdb.read();
-    return res.json({ count: lowdb.data.visitors.count || 0 });
+    const count = lowdb.data.visitors.count || 0;
+    console.log(`[GET /visitor-count] LowDB: returning count = ${count}`);
+    return res.json({ count, source: 'file' });
   } catch (err) {
-    console.error(err);
+    console.error('[GET /visitor-count] Error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -62,20 +75,26 @@ app.get('/visitor-count', async (req, res) => {
 app.post('/visitor-count', async (req, res) => {
   try {
     const inc = Number(req.body.inc || 1);
+    console.log(`[POST /visitor-count] Incrementing by ${inc}`);
+    
     if (visitorsCollection) {
       const result = await visitorsCollection.findOneAndUpdate(
         { _id: 'visitors' },
         { $inc: { count: inc } },
         { returnDocument: 'after', upsert: true }
       );
-      return res.json({ count: result.value.count });
+      const newCount = result.value.count;
+      console.log(`[POST /visitor-count] MongoDB: new count = ${newCount}`);
+      return res.json({ count: newCount, source: 'mongodb' });
     }
     await lowdb.read();
     lowdb.data.visitors.count = (lowdb.data.visitors.count || 0) + inc;
     await lowdb.write();
-    return res.json({ count: lowdb.data.visitors.count });
+    const newCount = lowdb.data.visitors.count;
+    console.log(`[POST /visitor-count] LowDB: new count = ${newCount}`);
+    return res.json({ count: newCount, source: 'file' });
   } catch (err) {
-    console.error(err);
+    console.error('[POST /visitor-count] Error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -146,6 +165,33 @@ app.get('/api/github/contributions', async (req, res) => {
   } catch (err) {
     console.error('Error fetching GitHub contributions:', err);
     return res.status(500).json({ success: false, error: 'Failed to fetch GitHub contributions' });
+  }
+});
+
+// Health check endpoint
+app.get('/health', async (req, res) => {
+  try {
+    const source = visitorsCollection ? 'MongoDB' : 'File (LowDB)';
+    let visitorCount = 0;
+    
+    if (visitorsCollection) {
+      const doc = await visitorsCollection.findOne({ _id: 'visitors' });
+      visitorCount = doc?.count || 0;
+    } else {
+      await lowdb.read();
+      visitorCount = lowdb.data.visitors.count || 0;
+    }
+    
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      storage: source,
+      visitorCount,
+      githubConfigured: !!(process.env.GITHUB_TOKEN && process.env.GITHUB_USERNAME),
+    });
+  } catch (err) {
+    console.error('[/health] Error:', err);
+    res.status(500).json({ status: 'error', message: err.message });
   }
 });
 

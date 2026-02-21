@@ -31,9 +31,10 @@ export default function Footer() {
     // Fetch real visitor count from API and increment
     const fetchVisitorCount = async () => {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      console.debug('Footer: fetching visitor count from', apiUrl);
+      console.log('🔄 Footer: Fetching visitor count from', apiUrl);
+      
       try {
-        // Increment visitor count
+        // Increment visitor count on page load
         const postResponse = await fetch(`${apiUrl}/visitor-count`, { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -42,25 +43,32 @@ export default function Footer() {
         
         if (postResponse.ok) {
           const data = await postResponse.json();
-          console.debug('Visitor count updated:', data);
+          console.log('✅ Visitor count incremented:', data);
           setVisitorCount(data.count || null);
           setVisitorError(null);
         } else {
-          // Fallback: get current count
-          console.warn('POST failed, trying GET');
+          throw new Error(`HTTP ${postResponse.status}: ${postResponse.statusText}`);
+        }
+      } catch (e) {
+        console.error('❌ Failed to increment visitor count:', e);
+        
+        // Try fallback: just fetch current count
+        try {
           const getResponse = await fetch(`${apiUrl}/visitor-count`);
           if (getResponse.ok) {
             const data = await getResponse.json();
-            console.debug('Visitor count fetched:', data);
+            console.log('✅ Visitor count fetched (fallback):', data);
             setVisitorCount(data.count || null);
             setVisitorError(null);
           } else {
-            setVisitorError(`HTTP ${getResponse.status}`);
+            throw new Error(`HTTP ${getResponse.status}`);
           }
+        } catch (fallbackErr) {
+          console.error('❌ Fallback failed:', fallbackErr);
+          const errorMsg = e instanceof Error ? e.message : 'Connection error';
+          setVisitorError(errorMsg);
+          setVisitorCount(null);
         }
-      } catch (e) {
-        console.error('Failed to fetch visitor count:', e);
-        setVisitorError(e instanceof Error ? e.message : 'Connection error');
       }
     };
 
