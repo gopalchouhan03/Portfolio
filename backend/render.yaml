@@ -1,0 +1,18 @@
+# Optional Render service descriptor — edit before using
+# See https://render.com/docs/render-yaml for details
+services:
+  - type: web
+    name: portfolio-backend
+    env: node
+    branch: main
+    root: backend
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    plan: free
+    envVars:
+      - key: ADMIN_SECRET
+        value: "CHANGE_ME"
+      - key: PORT
+        value: "5000"
+      # - key: MONGODB_URI
+      #   value: ""

@@ -100,7 +100,24 @@ export function useGitHubContributions() {
         const result = await response.json();
         
         if (result.success) {
-          setData(result.data);
+          // compute simple stats: last 7 and 30 days sums if contributions provided
+          const contributions = result.data?.contributions || [];
+          const today = new Date();
+          const last7 = contributions
+            .filter((c: any) => {
+              const d = new Date(c.date + 'T00:00:00');
+              return (today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24) < 7;
+            })
+            .reduce((s: number, c: any) => s + (c.count || 0), 0);
+          const last30 = contributions
+            .filter((c: any) => {
+              const d = new Date(c.date + 'T00:00:00');
+              return (today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24) < 30;
+            })
+            .reduce((s: number, c: any) => s + (c.count || 0), 0);
+
+          const withStats = { ...(result.data || {}), stats: { last7Days: last7, last30Days: last30 } };
+          setData(withStats);
         } else {
           setError(result.error || 'Failed to fetch GitHub data');
         }
