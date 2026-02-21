@@ -2,9 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 
-const API_BASE_URL = typeof window !== 'undefined' 
-  ? process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
-  : 'http://localhost:5000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 interface ProjectStats {
   projectId: string;
@@ -50,22 +48,21 @@ export function useVisitorCount() {
   useEffect(() => {
     async function fetchCount() {
       try {
-        // Increment visitor count first
-        const postResponse = await fetch(`${API_BASE_URL}/api/visitor/increment`, { 
-          method: 'POST' 
+        // Increment visitor count and fetch updated value
+        const postResponse = await fetch(`${API_BASE_URL}/visitor-count`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ inc: 1 }),
         });
-        
         if (postResponse.ok) {
           const data = await postResponse.json();
-          if (data.success) {
-            setCount(data.data.count);
-          }
+          setCount(data.count || 0);
         } else {
-          // Fall back to just fetching
-          const getResponse = await fetch(`${API_BASE_URL}/api/visitor`);
-          const data = await getResponse.json();
-          if (data.success) {
-            setCount(data.data.count);
+          // Fallback: fetch current count
+          const getResponse = await fetch(`${API_BASE_URL}/visitor-count`);
+          if (getResponse.ok) {
+            const data = await getResponse.json();
+            setCount(data.count || 0);
           }
         }
       } catch (err) {
