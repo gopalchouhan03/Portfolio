@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import PortfolioAssistant from "@/components/PortfolioAssistant";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,9 +77,12 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-slate-950 text-slate-100 transition-colors duration-300`}
+        suppressHydrationWarning
       >
-        {children}
-        <PortfolioAssistant />
+        <ThemeProvider>
+          {children}
+          <PortfolioAssistant />
+        </ThemeProvider>
       </body>
     </html>
   );
