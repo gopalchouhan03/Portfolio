@@ -37,6 +37,7 @@ async function fetchFromBackend(): Promise<GitHubContributionData> {
       );
 
     return {
+      username: json.data?.username || '',
       totalContributions: json.data?.totalContributions || 0,
       contributions,
       fetchedAt: new Date(),
@@ -66,6 +67,7 @@ function getContributionLevel(count: number): 0 | 1 | 2 | 3 | 4 {
 
 function getFallbackData(): GitHubContributionData {
   return {
+    username: '',
     totalContributions: 0,
     contributions: [],
     fetchedAt: new Date(),
