@@ -74,33 +74,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="icon" href="/Logo.png" />
-        
-        {/* Theme initialization script - runs synchronously before React to prevent flash */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const savedTheme = localStorage.getItem('theme') || 'dark';
-                  const htmlElement = document.documentElement;
-                  
-                  // Apply theme immediately
-                  if (savedTheme === 'light') {
-                    htmlElement.classList.remove('dark');
-                    document.documentElement.style.colorScheme = 'light';
-                  } else {
-                    htmlElement.classList.add('dark');
-                    document.documentElement.style.colorScheme = 'dark';
-                  }
-                } catch (e) {
-                  // Fallback: default to dark
-                  document.documentElement.classList.add('dark');
-                  document.documentElement.style.colorScheme = 'dark';
-                }
-              })();
-            `,
-          }}
-        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-slate-950 text-slate-100 transition-colors duration-300`}
