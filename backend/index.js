@@ -9,7 +9,7 @@ const app = express();
 
 // CORS configuration for portfolio domain
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:5000', 'https://portfolio-y6q9.onrender.com', 'https://gopalchouhan.com'],
+  origin: ['http://localhost:3000', 'http://localhost:5000', 'https://portfolio-y6q9.onrender.com', 'https://gopalchouhan.com', 'https://gopalxportfolio.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'x-admin-secret'],
