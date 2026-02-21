@@ -44,7 +44,7 @@ export default function HeroSection() {
   };
   return (
     <>
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden px-4 py-24">
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden px-4 pt-6 pb-24">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div

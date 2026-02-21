@@ -80,7 +80,7 @@ function Navbar() {
                   animate={pathname !== '/' ? { x: [0, -4, 0] } : undefined}
                   transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 >
-                  <ArrowLeft size={20} className="text-blue-400 drop-shadow-lg group-hover:text-blue-300 transition-colors" />
+                  <ArrowLeft size={20} className="text-blue-400 transition-colors drop-shadow-lg group-hover:text-blue-300" />
                 </motion.div>
               </motion.div>
             </Link>
