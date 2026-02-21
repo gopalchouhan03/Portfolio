@@ -86,6 +86,10 @@ interface GitHubStats {
     count: number;
     level: 0 | 1 | 2 | 3 | 4;
   }>;
+  stats?: {
+    last7Days: number;
+    last30Days: number;
+  };
 }
 
 export function useGitHubContributions() {
