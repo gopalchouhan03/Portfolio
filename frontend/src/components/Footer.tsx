@@ -31,10 +31,21 @@ export default function Footer() {
     // Fetch real visitor count from API and increment
     const fetchVisitorCount = async () => {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      console.log('🔄 Footer: Fetching visitor count from', apiUrl);
+      console.log('🔄 Visitor Counter: Connecting to', apiUrl);
       
       try {
-        // Increment visitor count on page load
+        // First test if backend is alive with health check
+        try {
+          const healthRes = await fetch(`${apiUrl}/health`, { method: 'GET' });
+          if (healthRes.ok) {
+            const healthData = await healthRes.json();
+            console.log('✅ Backend health check passed:', healthData);
+          }
+        } catch (healthErr) {
+          console.warn('⚠️ Health check failed (non-critical):', healthErr);
+        }
+        
+        // Now increment visitor count
         const postResponse = await fetch(`${apiUrl}/visitor-count`, { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -46,26 +57,33 @@ export default function Footer() {
           console.log('✅ Visitor count incremented:', data);
           setVisitorCount(data.count || null);
           setVisitorError(null);
+          return;
         } else {
+          const errorText = await postResponse.text();
+          console.error(`❌ POST returned ${postResponse.status}:`, errorText);
           throw new Error(`HTTP ${postResponse.status}: ${postResponse.statusText}`);
         }
-      } catch (e) {
-        console.error('❌ Failed to increment visitor count:', e);
+      } catch (postErr) {
+        console.error('❌ POST /visitor-count failed:', postErr);
         
         // Try fallback: just fetch current count
         try {
-          const getResponse = await fetch(`${apiUrl}/visitor-count`);
+          console.log('🔄 Trying fallback GET request...');
+          const getResponse = await fetch(`${apiUrl}/visitor-count`, { method: 'GET' });
+          
           if (getResponse.ok) {
             const data = await getResponse.json();
             console.log('✅ Visitor count fetched (fallback):', data);
             setVisitorCount(data.count || null);
             setVisitorError(null);
+            return;
           } else {
             throw new Error(`HTTP ${getResponse.status}`);
           }
-        } catch (fallbackErr) {
-          console.error('❌ Fallback failed:', fallbackErr);
-          const errorMsg = e instanceof Error ? e.message : 'Connection error';
+        } catch (getErr) {
+          console.error('❌ GET /visitor-count failed:', getErr);
+          const errorMsg = postErr instanceof Error ? postErr.message : 'Connection error';
+          console.error(`❌ Final error: ${errorMsg}`);
           setVisitorError(errorMsg);
           setVisitorCount(null);
         }
@@ -131,7 +149,9 @@ export default function Footer() {
             <div className="flex flex-col items-center gap-2 px-4 py-3 sm:flex-row sm:gap-3 sm:px-6 transition-colors duration-300 border border-amber-500/30 rounded-full bg-amber-500/10 backdrop-blur-md">
               <Eye className="w-5 h-5 text-amber-400 flex-shrink-0" />
               <span className="text-xs sm:text-sm font-medium text-amber-900 dark:text-amber-100 text-center sm:text-left">
-                Visitor counter unavailable ({visitorError})
+                Visitor counter unavailable 
+                <br className="sm:hidden" />
+                ({visitorError})
               </span>
             </div>
           ) : (
