@@ -96,44 +96,6 @@ app.post('/visitor-count/reset', async (req, res) => {
   }
 });
 
-// GitHub contributions endpoint
-app.get('/api/github/contributions', async (req, res) => {
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const GITHUB_USERNAME = process.env.GITHUB_USERNAME;
-
-  if (!GITHUB_TOKEN || !GITHUB_USERNAME) {
-    return res.status(500).json({ success: false, error: 'GitHub token or username not configured' });
-  }
-
-  const query = `query($login: String!) {\n  user(login: $login) {\n    contributionsCollection {\n      contributionCalendar {\n        totalContributions\n        weeks {\n          contributionDays {\n            date\n            contributionCount\n          }\n        }\n      }\n    }\n  }\n}`;
-
-  try {
-    const response = await fetch('https://api.github.com/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `bearer ${GITHUB_TOKEN}`,
-      },
-      body: JSON.stringify({ query, variables: { login: GITHUB_USERNAME } }),
-    });
-
-    if (!response.ok) {
-      const text = await response.text();
-      console.error('GitHub API error', response.status, text);
-      return res.status(502).json({ success: false, error: 'Failed to fetch from GitHub API' });
-    }
-
-    const json = await response.json();
-    const weeks = json?.data?.user?.contributionsCollection?.contributionCalendar?.weeks || [];
-    const totalContributions = json?.data?.user?.contributionsCollection?.contributionCalendar?.totalContributions || 0;
-
-    return res.json({ success: true, data: { username: GITHUB_USERNAME, totalContributions, weeks } });
-  } catch (err) {
-    console.error('Error fetching GitHub contributions:', err);
-    return res.status(500).json({ success: false, error: 'Failed to fetch GitHub contributions' });
-  }
-});
-
 init().then(() => {
   app.listen(PORT, () => {
     console.log(`Portfolio backend listening on port ${PORT}`);
