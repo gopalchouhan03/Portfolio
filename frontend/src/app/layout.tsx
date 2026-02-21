@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/context/ThemeContext";
 import PortfolioAssistant from "@/components/PortfolioAssistant";
 
 const geistSans = Geist({
@@ -76,12 +75,10 @@ export default function RootLayout({
         <link rel="icon" href="/Logo.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-slate-950 text-slate-100 transition-colors duration-300`}
       >
-        <ThemeProvider>
-          {children}
-          <PortfolioAssistant />
-        </ThemeProvider>
+        {children}
+        <PortfolioAssistant />
       </body>
     </html>
   );

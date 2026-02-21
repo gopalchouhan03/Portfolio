@@ -2,6 +2,10 @@
 
 import { useEffect, useState, useCallback } from 'react';
 
+const API_BASE_URL = typeof window !== 'undefined' 
+  ? process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+  : 'http://localhost:5000';
+
 interface ProjectStats {
   projectId: string;
   likeCount: number;
@@ -14,55 +18,19 @@ export function useProjectStats(projectId: string) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch stats on mount
+  // NOTE: Project stats functionality is not yet implemented in the backend
+  // This hook is kept for future implementation
+  
   useEffect(() => {
-    async function fetchStats() {
-      try {
-        const response = await fetch(`/api/projects/${projectId}/stats`);
-        const data = await response.json();
-        if (data.success) {
-          setLikes(data.data.likeCount);
-          setViews(data.data.viewCount);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch stats');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    if (projectId) {
-      fetchStats();
-    }
+    setIsLoading(false);
   }, [projectId]);
 
   const toggleLike = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/projects/${projectId}/like`, {
-        method: 'POST',
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setLikes(data.data.likeCount);
-      } else {
-        setError(data.error);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to toggle like');
-    }
+    setError('Project stats not implemented');
   }, [projectId]);
 
   const incrementView = useCallback(async () => {
-    try {
-      await fetch(`/api/projects/${projectId}/stats`, {
-        method: 'POST',
-      });
-      // Update local state optimistically
-      setViews(prev => prev + 1);
-    } catch (err) {
-      console.error('Failed to increment view:', err);
-    }
+    // Not implemented yet
   }, [projectId]);
 
   return {
@@ -82,25 +50,27 @@ export function useVisitorCount() {
   useEffect(() => {
     async function fetchCount() {
       try {
-        // Try to increment first (counts this visitor)
-        const postResponse = await fetch('/api/visitor', { method: 'POST' });
+        // Increment visitor count first
+        const postResponse = await fetch(`${API_BASE_URL}/api/visitor/increment`, { 
+          method: 'POST' 
+        });
+        
         if (postResponse.ok) {
           const data = await postResponse.json();
           if (data.success) {
             setCount(data.data.count);
           }
-        }
-      } catch (err) {
-        // Fall back to just fetching
-        try {
-          const getResponse = await fetch('/api/visitor');
+        } else {
+          // Fall back to just fetching
+          const getResponse = await fetch(`${API_BASE_URL}/api/visitor`);
           const data = await getResponse.json();
           if (data.success) {
             setCount(data.data.count);
           }
-        } catch (e) {
-          console.error('Failed to fetch visitor count:', e);
         }
+      } catch (err) {
+        console.error('Failed to fetch visitor count:', err);
+        // Silently fail - not critical
       } finally {
         setIsLoading(false);
       }
@@ -113,18 +83,12 @@ export function useVisitorCount() {
 }
 
 interface GitHubStats {
-  username: string;
   totalContributions: number;
   contributions: Array<{
     date: string;
     count: number;
     level: 0 | 1 | 2 | 3 | 4;
   }>;
-  stats?: {
-    last7Days: number;
-    last30Days: number;
-    thisYearContributions: number;
-  };
 }
 
 export function useGitHubContributions() {
@@ -135,14 +99,16 @@ export function useGitHubContributions() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/github/contributions');
+        const response = await fetch(`${API_BASE_URL}/api/github/contributions`);
         const result = await response.json();
+        
         if (result.success) {
           setData(result.data);
         } else {
-          setError(result.error);
+          setError(result.error || 'Failed to fetch GitHub data');
         }
       } catch (err) {
+        console.error('GitHub data fetch error:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch GitHub data');
       } finally {
         setIsLoading(false);

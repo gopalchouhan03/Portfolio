@@ -11,6 +11,10 @@ interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function ProjectDetailPage(props: ProjectDetailPageProps) {
-  return <ProjectDetailClient params={props.params} />;
+export default async function ProjectDetailPage(props: ProjectDetailPageProps) {
+  const { id } = await props.params;
+  const project = projectsData.find(p => p.id.toString() === id);
+
+  return <ProjectDetailClient project={project} />;
 }
+

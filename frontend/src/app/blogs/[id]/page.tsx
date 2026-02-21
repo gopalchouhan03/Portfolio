@@ -13,6 +13,8 @@ interface BlogDetailPageProps {
   }>;
 }
 
-export default function BlogDetailPage(props: BlogDetailPageProps) {
-  return <BlogDetailClient params={props.params} />;
-}
+export default async function BlogDetailPage(props: BlogDetailPageProps) {
+  const { id } = await props.params;
+  const blog = blogsData.find(b => b.id.toString() === id);
+
+  return <BlogDetailClient blog={blog} />;}

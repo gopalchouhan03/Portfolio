@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
@@ -6,21 +6,34 @@ import Footer from '@/components/Footer';
 import { Calendar, Share2, Heart, MessageCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { blogsData } from '@/lib/blogs';
-import { notFound } from 'next/navigation';
-import React, { use } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface BlogDetailClientProps {
-  params: Promise<{
-    id: string;
-  }>;
+  blog?: {
+    id: number;
+    title: string;
+    description: string;
+    content: string;
+    tags: string[];
+    cover?: string;
+    date?: string;
+    readTime?: string;
+    author?: string;
+    category?: string;
+  } | null;
 }
 
-export function BlogDetailClient({ params }: BlogDetailClientProps) {
-  const { id } = use(params);
-  const blog = blogsData.find((b) => b.id === parseInt(id));
-
+export function BlogDetailClient({ blog }: BlogDetailClientProps) {
   if (!blog) {
-    notFound();
+    return (
+      <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
+        <Navbar />
+        <div className="max-w-6xl px-4 py-20 mx-auto text-center">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">Blog not found</h1>
+        </div>
+        <Footer />
+      </main>
+    );
   }
 
   const currentIndex = blogsData.findIndex((b) => b.id === blog.id);
@@ -33,6 +46,18 @@ export function BlogDetailClient({ params }: BlogDetailClientProps) {
         b.tags.some((tag) => blog.tags.includes(tag))
     )
     .slice(0, 3);
+
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  useEffect(() => {
+    if (!blog?.id) return;
+    const id = blog.id;
+    const storageLiked = localStorage.getItem(`blog-liked-${id}`);
+    const storageCount = localStorage.getItem(`blog-likes-${id}`);
+    setLiked(storageLiked === 'true');
+    setLikeCount(storageCount ? parseInt(storageCount) : 0);
+  }, [blog?.id]);
 
   return (
     <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
@@ -162,11 +187,38 @@ export function BlogDetailClient({ params }: BlogDetailClientProps) {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="flex flex-wrap items-center gap-6 py-8 border-t border-b border-slate-200 dark:border-white/10"
         >
-          <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors text-slate-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+          <button
+            onClick={() => {
+              if (!blog?.id) return;
+              const newLiked = !liked;
+              setLiked(newLiked);
+              const newCount = newLiked ? likeCount + 1 : Math.max(0, likeCount - 1);
+              setLikeCount(newCount);
+              localStorage.setItem(`blog-liked-${blog.id}`, newLiked.toString());
+              localStorage.setItem(`blog-likes-${blog.id}`, newCount.toString());
+            }}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors text-slate-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+          >
             <Heart size={18} />
-            Like
+            {liked ? 'Liked' : 'Like'} {likeCount > 0 && `(${likeCount})`}
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors text-slate-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator
+                  .share({
+                    title: blog.title,
+                    text: blog.description,
+                    url: typeof window !== 'undefined' ? window.location.href : '',
+                  })
+                  .catch(() => {});
+              } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                navigator.clipboard.writeText(typeof window !== 'undefined' ? window.location.href : '');
+                alert('Blog link copied to clipboard!');
+              }
+            }}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors text-slate-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+          >
             <Share2 size={18} />
             Share
           </button>

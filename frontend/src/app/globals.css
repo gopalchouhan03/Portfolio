@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    color-scheme: light dark;
+    color-scheme: dark;
   }
 
   html {
@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300;
+    @apply bg-slate-950 text-slate-100 transition-colors duration-300;
     font-family: system-ui, -apple-system, sans-serif;
   }
 
@@ -33,29 +33,21 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
   }
-
-  .light ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-  }
-
-  .light ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
-  }
 }
 
 @layer components {
   /* Glassmorphism card */
   .glass-card {
-    @apply relative overflow-hidden rounded-xl border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-md transition-all duration-300;
+    @apply relative overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-300;
   }
 
   .glass-card:hover {
-    @apply border-slate-300 dark:border-white/20 bg-white/70 dark:bg-white/10;
+    @apply border-white/20 bg-white/10;
   }
 
   /* Smooth text gradient */
   .gradient-text {
-    @apply bg-gradient-to-r from-slate-900 via-slate-900 to-slate-600 dark:from-slate-100 dark:via-slate-100 dark:to-gray-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-slate-100 via-slate-100 to-gray-500 bg-clip-text text-transparent;
   }
 
   /* Premium button style */
@@ -64,7 +56,7 @@
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-slate-100 px-6 py-3 font-medium transition-all duration-300 hover:border-slate-400 dark:hover:border-white/40 hover:bg-slate-200 dark:hover:bg-white/10;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 text-slate-100 px-6 py-3 font-medium transition-all duration-300 hover:border-white/40 hover:bg-white/10;
   }
 
   /* Smooth animation utilities */

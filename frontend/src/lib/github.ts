@@ -1,65 +1,33 @@
-// GitHub Integration - Fetches and caches contribution data
+// GitHub Integration - Fetches contribution data from backend API
 import { GitHubContributionData } from '@/types';
-import { getCollection } from './db';
 
-const GITHUB_USERNAME = process.env.GITHUB_USERNAME || '';
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const CACHE_DURATION_HOURS = 24;
 
-async function fetchFromGitHub(): Promise<GitHubContributionData> {
-  if (!GITHUB_TOKEN) {
-    console.warn('⚠️  GITHUB_TOKEN not set. Using fallback data.');
-    return getFallbackData();
-  }
-
-  const query = `
-    query {
-      user(login: "${GITHUB_USERNAME}") {
-        contributionsCollection {
-          contributionCalendar {
-            totalContributions
-            weeks {
-              contributionDays {
-                contributionCount
-                date
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
+async function fetchFromBackend(): Promise<GitHubContributionData> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  
   try {
-    const response = await fetch('https://api.github.com/graphql', {
-      method: 'POST',
+    const response = await fetch(`${apiUrl}/api/github/contributions`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GITHUB_TOKEN}`,
       },
-      body: JSON.stringify({ query }),
     });
 
     if (!response.ok) {
-      console.error(`❌ GitHub API HTTP ${response.status}`);
-      throw new Error(`GitHub API error: ${response.status}`);
+      console.error(`❌ Backend API HTTP ${response.status}`);
+      throw new Error(`Backend API error: ${response.status}`);
     }
 
     const json = await response.json();
 
-    if (json.errors) {
-      console.error('❌ GitHub GraphQL errors:', json.errors);
-      return getFallbackData();
+    if (json.error) {
+      console.error('❌ Backend API error:', json.error);
+      throw new Error(json.error);
     }
 
-    const calendar = json.data?.user?.contributionsCollection?.contributionCalendar;
-    if (!calendar) {
-      console.error('❌ No calendar data in GitHub response');
-      return getFallbackData();
-    }
-
-    // Flatten weeks and days into a simple array
-    const contributions = calendar.weeks
+    // Transform data from backend format
+    const contributions = (json.data?.weeks || [])
       .flatMap((week: any) =>
         week.contributionDays.map((day: any) => ({
           date: day.date,
@@ -69,43 +37,20 @@ async function fetchFromGitHub(): Promise<GitHubContributionData> {
       );
 
     return {
-      username: GITHUB_USERNAME,
-      totalContributions: calendar.totalContributions,
+      totalContributions: json.data?.totalContributions || 0,
       contributions,
       fetchedAt: new Date(),
       expiresAt: new Date(Date.now() + CACHE_DURATION_HOURS * 60 * 60 * 1000),
     };
   } catch (error) {
-    console.error('Failed to fetch GitHub contributions:', error);
+    console.error('❌ Error fetching GitHub contributions from backend:', error);
     return getFallbackData();
   }
 }
 
-export async function getGitHubContributions(
-  forceRefresh = false
-): Promise<GitHubContributionData> {
-  const collection = await getCollection('github-cache');
-
-  // Try to get from cache
-  if (!forceRefresh) {
-    const cached = await collection.findOne({ type: 'contributions' });
-    if (cached && cached.expiresAt && new Date(cached.expiresAt as Date) > new Date()) {
-      const { _id, ...data } = cached;
-      return data as GitHubContributionData;
-    }
-  }
-
-  // Fetch fresh data
-  const freshData = await fetchFromGitHub();
-
-  // Update cache
-  await collection.updateOne(
-    { type: 'contributions' },
-    { $set: { ...freshData, type: 'contributions' } },
-    { upsert: true }
-  );
-
-  return freshData;
+export async function getGitHubContributions(): Promise<GitHubContributionData> {
+  // Fetch fresh data from backend
+  return await fetchFromBackend();
 }
 
 /**
@@ -121,7 +66,6 @@ function getContributionLevel(count: number): 0 | 1 | 2 | 3 | 4 {
 
 function getFallbackData(): GitHubContributionData {
   return {
-    username: GITHUB_USERNAME || 'unknown',
     totalContributions: 0,
     contributions: [],
     fetchedAt: new Date(),

@@ -52,7 +52,6 @@ next-env.d.ts
 *~
 .DS_Store
 
-# Cloudflare
-*.db
-.wrangler/
-dist/
+
+.vercel
+.env*.local

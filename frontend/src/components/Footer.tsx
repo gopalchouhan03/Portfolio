@@ -29,6 +29,7 @@ export default function Footer() {
   useEffect(() => {
     // Fetch real visitor count from API and increment
     const fetchVisitorCount = async () => {
+      console.debug('Footer: fetching visitor count');
       try {
         // Increment visitor count
         const postResponse = await fetch('/api/visitor', { method: 'POST' });
@@ -69,7 +70,7 @@ export default function Footer() {
 
 
   return (
-    <footer className="relative transition-colors duration-300 border-t border-slate-200 dark:border-white/10 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-black/50" aria-label="Website footer">
+    <footer className="relative transition-colors duration-300 border-t border-white/10 bg-gradient-to-b from-slate-950 to-black/50" aria-label="Website footer">
       <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-16">
         {/* Quote Section */}
         {dailyQuote && (
@@ -78,15 +79,15 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="p-6 mb-16 transition-colors duration-300 border rounded-2xl border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 backdrop-blur-md"
+            className="p-6 mb-16 transition-colors duration-300 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-md"
           >
             <div className="flex gap-4">
-              <div className="text-4xl font-bold text-blue-500 dark:text-blue-400 opacity-30">"</div>
+              <div className="text-4xl font-bold text-blue-400 opacity-30">"</div>
               <div>
-                <p className="mb-3 text-base italic font-light sm:text-lg text-slate-900 dark:text-slate-100">
+                <p className="mb-3 text-base italic font-light sm:text-lg text-slate-100">
                   {dailyQuote.text}
                 </p>
-                <p className="text-sm text-slate-600 dark:text-gray-400">
+                <p className="text-sm text-gray-400">
                   — {dailyQuote.author}
                 </p>
               </div>
@@ -96,21 +97,15 @@ export default function Footer() {
 
         {/* Visitor Counter */}
         {visitorCount !== null && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="flex justify-center mb-16"
-          >
-            <div className="flex items-center gap-3 px-6 py-3 transition-colors duration-300 border border-blue-400 rounded-full dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/10 backdrop-blur-md">
-              <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          <div className="flex justify-center mb-16">
+            <div className="flex items-center gap-3 px-6 py-3 transition-colors duration-300 border border-blue-500/30 rounded-full bg-blue-500/10 backdrop-blur-md">
+              <Eye className="w-5 h-5 text-blue-400" />
               <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
                 You are the <span className="font-bold text-blue-600 dark:text-blue-400">{visitorCount.toLocaleString()}</span>
                 <sup className="text-xs">th</sup> visitor
               </span>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Divider */}

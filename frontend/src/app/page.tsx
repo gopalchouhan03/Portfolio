@@ -28,7 +28,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="relative min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950 cursor-none">
+    <main className="relative min-h-screen transition-colors duration-300 bg-slate-950 text-slate-100 cursor-none">
       <CustomCursor />
       <Navbar />
 

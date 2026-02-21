@@ -1,48 +1,44 @@
-'use client';
+"use client";
 
 import { motion } from 'framer-motion';
-import { use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ArrowLeft, ExternalLink, Github, ArrowRight, Heart, Share2 } from 'lucide-react';
-import { projectsData } from '@/lib/projects';
+import { projectsData, Project } from '@/lib/projects';
 import { useState, useEffect } from 'react';
 
 interface ProjectDetailClientProps {
-  params: Promise<{ id: string }>;
+  project?: Project | null;
 }
 
-export function ProjectDetailClient({ params }: ProjectDetailClientProps) {
-  const { id } = use(params);
-  const project = projectsData.find((p) => p.id === parseInt(id));
+export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  const projectIndex = projectsData.findIndex((p) => p.id === parseInt(id));
+  const projectIndex = project ? projectsData.findIndex((p) => p.id === project.id) : -1;
 
   // Load like state from localStorage on mount
   useEffect(() => {
-    if (!id) return;
-    const storageLiked = localStorage.getItem(`project-liked-${id}`);
-    const storageCount = localStorage.getItem(`project-likes-${id}`);
+    if (!project?.id) return;
+    const pid = project.id;
+    const storageLiked = localStorage.getItem(`project-liked-${pid}`);
+    const storageCount = localStorage.getItem(`project-likes-${pid}`);
     setLiked(storageLiked === 'true');
     setLikeCount(storageCount ? parseInt(storageCount) : 0);
-  }, [id]);
+  }, [project?.id]);
   const prevProject = projectIndex > 0 ? projectsData[projectIndex - 1] : null;
   const nextProject = projectIndex < projectsData.length - 1 ? projectsData[projectIndex + 1] : null;
-  const relatedProjects = projectsData.filter((p) =>
-    project?.relatedProjectIds.includes(p.id)
-  );
+  const relatedProjects = project
+    ? projectsData.filter((p) => project.relatedProjectIds.includes(p.id))
+    : [];
 
   if (!project) {
     return (
       <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
         <Navbar />
         <div className="max-w-6xl px-4 py-20 mx-auto text-center">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">
-            Project not found
-          </h1>
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">Project not found</h1>
           <Link href="/projects">
             <button className="mt-8 btn-primary">Back to Projects</button>
           </Link>
@@ -147,8 +143,10 @@ export function ProjectDetailClient({ params }: ProjectDetailClientProps) {
                 setLiked(newLiked);
                 const newCount = newLiked ? likeCount + 1 : Math.max(0, likeCount - 1);
                 setLikeCount(newCount);
-                localStorage.setItem(`project-liked-${id}`, newLiked.toString());
-                localStorage.setItem(`project-likes-${id}`, newCount.toString());
+                if (project?.id) {
+                  localStorage.setItem(`project-liked-${project.id}`, newLiked.toString());
+                  localStorage.setItem(`project-likes-${project.id}`, newCount.toString());
+                }
               }}
               className="flex items-center gap-2 text-sm font-medium transition-colors text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
             >
