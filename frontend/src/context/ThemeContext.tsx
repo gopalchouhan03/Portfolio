@@ -11,14 +11,8 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function getInitialTheme(): Theme {
-  // This function gets the theme that was already applied by the script in layout
-  if (typeof window === 'undefined') return 'dark';
-  return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-}
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [theme, setTheme] = useState<Theme>('dark');
   const [mounted, setMounted] = useState(false);
 
   // Define applyTheme first so it can be used in useEffect hooks
@@ -33,28 +27,26 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Apply theme on initial load and sync with stored preference
+  // Sync with stored preference and system preference on mount
   useEffect(() => {
+    setMounted(true);
+    
     // Get theme from localStorage or system preference
     const savedTheme = localStorage.getItem('theme') as Theme | null;
     
-    if (savedTheme && savedTheme !== theme) {
+    if (savedTheme) {
       setTheme(savedTheme);
       applyTheme(savedTheme);
-    } else if (!savedTheme) {
+    } else {
       // Check system preference only if no saved theme
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const initialTheme: Theme = prefersDark ? 'dark' : 'light';
-      if (initialTheme !== theme) {
-        setTheme(initialTheme);
-        applyTheme(initialTheme);
-      }
+      setTheme(initialTheme);
+      applyTheme(initialTheme);
     }
-    
-    setMounted(true);
-  }, []);
+  }, [applyTheme]);
 
-  // Apply theme whenever it changes
+  // Apply theme whenever it changes (after mounted)
   useEffect(() => {
     if (mounted) {
       applyTheme(theme);
@@ -65,11 +57,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
-
-  // Don't render children until mounted to prevent hydration mismatch
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
