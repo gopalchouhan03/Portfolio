@@ -25,28 +25,42 @@ const QUOTES = [
 export default function Footer() {
   const [dailyQuote, setDailyQuote] = useState<typeof QUOTES[0] | null>(null);
   const [visitorCount, setVisitorCount] = useState<number | null>(null);
+  const [visitorError, setVisitorError] = useState<string | null>(null);
 
   useEffect(() => {
     // Fetch real visitor count from API and increment
     const fetchVisitorCount = async () => {
-      console.debug('Footer: fetching visitor count');
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      console.debug('Footer: fetching visitor count from', apiUrl);
       try {
         // Increment visitor count
-        const postResponse = await fetch('/api/visitor', { method: 'POST' });
+        const postResponse = await fetch(`${apiUrl}/visitor-count`, { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ inc: 1 }),
+        });
         
         if (postResponse.ok) {
           const data = await postResponse.json();
-          setVisitorCount(data.data?.count || null);
+          console.debug('Visitor count updated:', data);
+          setVisitorCount(data.count || null);
+          setVisitorError(null);
         } else {
           // Fallback: get current count
-          const getResponse = await fetch('/api/visitor');
+          console.warn('POST failed, trying GET');
+          const getResponse = await fetch(`${apiUrl}/visitor-count`);
           if (getResponse.ok) {
             const data = await getResponse.json();
-            setVisitorCount(data.data?.count || null);
+            console.debug('Visitor count fetched:', data);
+            setVisitorCount(data.count || null);
+            setVisitorError(null);
+          } else {
+            setVisitorError(`HTTP ${getResponse.status}`);
           }
         }
       } catch (e) {
         console.error('Failed to fetch visitor count:', e);
+        setVisitorError(e instanceof Error ? e.message : 'Connection error');
       }
     };
 
@@ -96,8 +110,8 @@ export default function Footer() {
         )}
 
         {/* Visitor Counter */}
-        {visitorCount !== null && (
-          <div className="flex justify-center mb-16">
+        <div className="flex justify-center mb-16">
+          {visitorCount !== null ? (
             <div className="flex items-center gap-3 px-6 py-3 transition-colors duration-300 border border-blue-500/30 rounded-full bg-blue-500/10 backdrop-blur-md">
               <Eye className="w-5 h-5 text-blue-400" />
               <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
@@ -105,8 +119,20 @@ export default function Footer() {
                 <sup className="text-xs">th</sup> visitor
               </span>
             </div>
-          </div>
-        )}
+          ) : visitorError ? (
+            <div className="flex items-center gap-3 px-6 py-3 transition-colors duration-300 border border-amber-500/30 rounded-full bg-amber-500/10 backdrop-blur-md">
+              <Eye className="w-5 h-5 text-amber-400" />
+              <span className="text-sm font-medium text-amber-900 dark:text-amber-100">
+                Visitor counter unavailable ({visitorError})
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 px-6 py-3">
+              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium text-slate-400">Loading visitor counter...</span>
+            </div>
+          )}
+        </div>
 
         {/* Divider */}
         <div className="h-px mb-8 transition-colors duration-300 bg-gradient-to-r from-transparent via-slate-300 dark:via-white/10 to-transparent" aria-hidden="true" />
