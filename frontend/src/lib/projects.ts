@@ -29,7 +29,7 @@ export const projectsData: Project[] = [
     status: 'In Progress',
     statusColor: 'bg-yellow-500/20 text-yellow-400',
     cover: '/images/projects/Udaan.png',
-    demo: 'https://udaanxgopal.vercel.app/',
+    demo: 'https://udaanxgopal.vercel.app',
     github: 'https://github.com/gopalchouhan03/Udaan-AI.git',
     features: [
       'Career guidance workflow',
@@ -83,7 +83,7 @@ export const projectsData: Project[] = [
     status: 'Completed',
     statusColor: 'bg-green-500/20 text-green-400',
     cover: '/images/projects/SmartOPD.png',
-    demo: 'https://d3p4s9hlqtvejf.cloudfront.net',
+    demo: 'https://smart-opdxgopal.vercel.app',
     github: 'https://github.com/gopalchouhan03/Smart-OPD.git',
     features: [
       'Patient & doctor management',
@@ -137,7 +137,7 @@ export const projectsData: Project[] = [
     status: 'Published',
     statusColor: 'bg-blue-500/20 text-blue-400',
     cover: '/images/projects/MyBlog.png ',
-    demo: 'https://d3hpld8vt7tywq.cloudfront.net',
+    demo: 'https://my-blogxgopal.vercel.app',
     github: 'https://github.com/gopalchouhan03/MyBlog.git',
     features: [
       'MDX-based blogs',
@@ -191,7 +191,7 @@ export const projectsData: Project[] = [
     status: 'Operational',
     statusColor: 'bg-green-500/20 text-green-400',
     cover: '/images/projects/Nexus_VideoMeet.png',
-    demo: 'https://d2curibwkm8k2v.cloudfront.net',
+    demo: 'https://nexus-videomeet.vercel.app',
     github: 'https://github.com/gopalchouhan03/Nexus_Videomeet.git',
     features: [
       'Peer-to-peer video calling',
@@ -244,9 +244,9 @@ export const projectsData: Project[] = [
     tags: ['React', 'Node.js', 'MongoDB'],
     status: 'In Progress',
     statusColor: 'bg-yellow-500/20 text-yellow-400',
-    cover: '/images/projects/Scam_alert.jpg',
-    demo: '#',
-    github: '#',
+    cover: '/images/projects/Scam_alert.png',
+    demo: 'https://scam-alertxgopal.vercel.app',
+    github: 'https://github.com/gopalchouhan03/Scam-Alert.git',
     features: [
       'Scam reporting awareness',
       'User-friendly content',
@@ -287,6 +287,73 @@ export const projectsData: Project[] = [
       'Add AI-powered scam detection',
       'Build community-driven reporting system'
     ],
+    relatedProjectIds: [1, 2]
+  },
+  {
+    id: 6,
+    title: 'Book Store',
+    description: 'An online bookstore platform that allows users to browse, search, and purchase books بسهولة with a smooth user experience.',
+
+    longDescription:
+      'Book Store is a full-stack web application designed to provide users with a seamless online book shopping experience. It allows users to explore a wide range of books, view detailed information, and purchase them بسهولة. The platform focuses on clean UI, fast performance, and easy navigation for all types of users.',
+
+    tags: ['React', 'Node.js', 'MongoDB'],
+
+    status: 'In Progress',
+    statusColor: 'bg-yellow-500/20 text-yellow-400',
+
+    cover: '/images/projects/book-store.png',
+    demo: 'https://book-storexgopal.vercel.app',
+    github: 'https://github.com/gopalchouhan03/bookStore.git',
+
+    features: [
+      'Browse books by categories and genres',
+      'Search functionality with filters',
+      'Detailed book pages with descriptions and pricing',
+      'Add to cart and checkout system',
+      'User authentication and account management',
+      'Responsive and user-friendly UI'
+    ],
+
+    overview:
+      'Book Store is an online platform that enables users to discover, explore, and purchase books with ease. It is designed for smooth navigation, fast performance, and an enjoyable reading-focused experience.',
+
+    whatUsersCan: [
+      'Browse books by category, author, or genre',
+      'Search books using keywords',
+      'View detailed information about each book',
+      'Add books to cart and place orders',
+      'Create and manage their accounts',
+      'Access the platform from mobile and desktop devices'
+    ],
+
+    whyBuilt: [
+      'To create a real-world e-commerce project for learning full-stack development',
+      'To provide users with an easy way to discover and buy books online',
+      'To practice building scalable and user-friendly applications',
+      'To implement authentication, cart, and payment flow',
+      'To improve UI/UX design skills',
+      'Personal interest in books and online platforms'
+    ],
+
+    techStack: [
+      'Frontend: React, Bootstrap',
+      'Backend: Node.js, Express',
+      'Database: MongoDB',
+      'Authentication: JWT',
+      'State Management: Context API / Redux',
+      'Deployment: Vercel / Render'
+    ],
+
+    futureParams: [
+      'Add online payment integration (Razorpay/Stripe)',
+      'Implement book reviews and ratings system',
+      'Add wishlist feature',
+      'Introduce admin dashboard for managing books',
+      'AI-based book recommendation system',
+      'Add order tracking functionality'
+    ],
+
     relatedProjectIds: [1, 2]
   }
 ];
