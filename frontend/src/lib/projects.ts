@@ -29,7 +29,7 @@ export const projectsData: Project[] = [
     status: 'In Progress',
     statusColor: 'bg-yellow-500/20 text-yellow-400',
     cover: '/images/projects/Udaan.png',
-    demo: 'https://d1ud2qozzk5hfq.cloudfront.net',
+    demo: 'https://udaanxgopal.vercel.app/',
     github: 'https://github.com/gopalchouhan03/Udaan-AI.git',
     features: [
       'Career guidance workflow',
