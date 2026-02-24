@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 
 type CursorRefs = {
-  wrapperRef: React.RefObject<HTMLDivElement>;
-  dotRef: React.RefObject<HTMLDivElement>;
-  outlineRef: React.RefObject<HTMLDivElement>;
-  labelRef: React.RefObject<HTMLDivElement>;
+  wrapperRef: React.RefObject<HTMLDivElement | null>;
+  dotRef: React.RefObject<HTMLDivElement | null>;
+  outlineRef: React.RefObject<HTMLDivElement | null>;
+  labelRef: React.RefObject<HTMLDivElement | null>;
 };
 
 export default function useCursor(): CursorRefs & { enabled: boolean } {
