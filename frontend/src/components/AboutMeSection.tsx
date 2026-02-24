@@ -83,9 +83,9 @@ export default function AboutMeSection() {
                 Gopal Chouhan
               </h3>
               <p className="leading-relaxed text-gray-400">
-                I'm a Full Stack web developer and Open Source Contributor, I
-                love building products to solve real-world problems. I'm
-                specialized in building MVP's.
+                I&apos;m a Full Stack web developer and Open Source Contributor, I
+                love building products to solve real-world problems. I&apos;m
+                specialized in building MVPs.
               </p>
             </div>
 

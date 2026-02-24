@@ -24,6 +24,29 @@ interface BlogDetailClientProps {
 }
 
 export function BlogDetailClient({ blog }: BlogDetailClientProps) {
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  // Calculate previous, next, and related blogs
+  const currentIndex = blogsData.findIndex((b) => b.id === blog?.id);
+  const prevBlog = currentIndex > 0 ? blogsData[currentIndex - 1] : null;
+  const nextBlog = currentIndex < blogsData.length - 1 ? blogsData[currentIndex + 1] : null;
+  const relatedBlogs = blogsData.filter(
+    (b) => b.category === blog?.category && b.id !== blog?.id
+  ).slice(0, 3);
+
+  useEffect(() => {
+    if (!blog?.id) return;
+    const id = blog.id;
+    const storageLiked = localStorage.getItem(`blog-liked-${id}`);
+    const storageCount = localStorage.getItem(`blog-likes-${id}`);
+    const t = setTimeout(() => {
+      setLiked(storageLiked === 'true');
+      setLikeCount(storageCount ? parseInt(storageCount) : 0);
+    }, 0);
+    return () => clearTimeout(t);
+  }, [blog?.id]);
+
   if (!blog) {
     return (
       <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
@@ -35,29 +58,6 @@ export function BlogDetailClient({ blog }: BlogDetailClientProps) {
       </main>
     );
   }
-
-  const currentIndex = blogsData.findIndex((b) => b.id === blog.id);
-  const prevBlog = currentIndex > 0 ? blogsData[currentIndex - 1] : null;
-  const nextBlog = currentIndex < blogsData.length - 1 ? blogsData[currentIndex + 1] : null;
-  const relatedBlogs = blogsData
-    .filter(
-      (b) =>
-        b.id !== blog.id &&
-        b.tags.some((tag) => blog.tags.includes(tag))
-    )
-    .slice(0, 3);
-
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-
-  useEffect(() => {
-    if (!blog?.id) return;
-    const id = blog.id;
-    const storageLiked = localStorage.getItem(`blog-liked-${id}`);
-    const storageCount = localStorage.getItem(`blog-likes-${id}`);
-    setLiked(storageLiked === 'true');
-    setLikeCount(storageCount ? parseInt(storageCount) : 0);
-  }, [blog?.id]);
 
   return (
     <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">

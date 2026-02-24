@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import PortfolioAssistant from "@/components/PortfolioAssistant";
+import CustomCursor from "@/components/CustomCursor";
+import VisitorTracker from "@/components/VisitorTracker";
 import { ThemeProvider } from "@/context/ThemeContext";
 
 const geistSans = Geist({
@@ -80,6 +82,8 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider>
+                <VisitorTracker />
+                <CustomCursor />
           {children}
           <PortfolioAssistant />
         </ThemeProvider>

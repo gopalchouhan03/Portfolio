@@ -164,11 +164,11 @@ export const projectsData: Project[] = [
       'Create a searchable knowledge base.'
     ],
     techStack: [
-      'Framework: Next.js 16 with App Router',
-      'Content: MDX (Markdown + JSX)',
-      'Styling: Tailwind CSS',
-      'Syntax Highlighting: Prism.js',
-      'SEO: Next.js Meta tags',
+      'Frontend: React, Tailwind CSS',
+      'Backend: Node.js, Express',
+      'Database: MongoDB',
+      'AI Integration: OpenAI API',
+      'Authentication: JWT',
       'Deployment: Vercel'
     ],
     futureParams: [

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { projectsData } from '@/lib/projects';
+import { type IconType } from 'react-icons';
 import {
   SiReact,
   SiNodedotjs,
@@ -22,7 +23,7 @@ import {
 } from 'react-icons/si';
 
 /* icon maps unchanged */
-const techIconMap: Record<string, any> = {
+const techIconMap: Record<string, IconType> = {
   'Next.js': SiNextdotjs,
   'Node.js': SiNodedotjs,
   'React Native': SiReact,
@@ -120,7 +121,7 @@ export default function ProjectsSection() {
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                     className="flex items-center justify-center rounded-full shadow-xl w-14 h-14 bg-white/90 backdrop-blur-md"
                   >
-                    <Play className="w-6 h-6 text-black fill-black ml-[2px]" />
+                    <Play className="w-6 h-6 text-black fill-black ml-0.5" />
                   </motion.div>
                 </motion.div>
 

@@ -24,8 +24,11 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
     const pid = project.id;
     const storageLiked = localStorage.getItem(`project-liked-${pid}`);
     const storageCount = localStorage.getItem(`project-likes-${pid}`);
-    setLiked(storageLiked === 'true');
-    setLikeCount(storageCount ? parseInt(storageCount) : 0);
+    const t = setTimeout(() => {
+      setLiked(storageLiked === 'true');
+      setLikeCount(storageCount ? parseInt(storageCount) : 0);
+    }, 0);
+    return () => clearTimeout(t);
   }, [project?.id]);
   const prevProject = projectIndex > 0 ? projectsData[projectIndex - 1] : null;
   const nextProject = projectIndex < projectsData.length - 1 ? projectsData[projectIndex + 1] : null;
@@ -212,7 +215,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 viewport={{ once: true }}
                 className="flex items-start gap-3 p-4 rounded-lg glass-card"
               >
-                <span className="flex-shrink-0 text-lg font-bold text-blue-500 dark:text-blue-400">
+                <span className="text-lg font-bold text-blue-500 shrink-0 dark:text-blue-400">
                   •
                 </span>
                 <span className="text-slate-700 dark:text-gray-300">{item}</span>
@@ -242,7 +245,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 viewport={{ once: true }}
                 className="flex items-start gap-3 p-4 border border-blue-200 rounded-lg bg-blue-500/5 dark:bg-blue-500/10 dark:border-blue-500/20"
               >
-                <span className="flex-shrink-0 font-semibold text-blue-600 dark:text-blue-400">
+                <span className="font-semibold text-blue-600 shrink-0 dark:text-blue-400">
                   {idx + 1}.
                 </span>
                 <span className="text-slate-700 dark:text-gray-300">{reason}</span>

@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply bg-slate-950 text-slate-100 transition-colors duration-300;
+    @apply transition-colors duration-300 bg-slate-950 text-slate-100;
     font-family: system-ui, -apple-system, sans-serif;
   }
 
@@ -38,7 +38,7 @@
 @layer components {
   /* Glassmorphism card */
   .glass-card {
-    @apply relative overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-300;
+    @apply relative overflow-hidden transition-all duration-300 border rounded-xl border-white/10 bg-white/5 backdrop-blur-md;
   }
 
   .glass-card:hover {
@@ -47,16 +47,16 @@
 
   /* Smooth text gradient */
   .gradient-text {
-    @apply bg-gradient-to-r from-slate-100 via-slate-100 to-gray-500 bg-clip-text text-transparent;
+    @apply text-transparent bg-gradient-to-r from-slate-100 via-slate-100 to-gray-500 bg-clip-text;
   }
 
   /* Premium button style */
   .btn-primary {
-    @apply relative inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/50 hover:bg-blue-700;
+    @apply relative inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-white transition-all duration-300 bg-blue-600 rounded-lg hover:shadow-lg hover:shadow-blue-500/50 hover:bg-blue-700;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 text-slate-100 px-6 py-3 font-medium transition-all duration-300 hover:border-white/40 hover:bg-white/10;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium transition-all duration-300 border rounded-lg border-white/20 bg-white/5 text-slate-100 hover:border-white/40 hover:bg-white/10;
   }
 
   /* Smooth animation utilities */
@@ -102,4 +102,110 @@
 body {
   animation: fadeIn 0.5s ease-in-out;
 }
+
+/* Custom cursor styles */
+html, body, #__next {
+  cursor: none; /* hide default cursor on capable devices */
+}
+
+/* Re-enable system cursor on touch / coarse pointer devices */
+@media (pointer: coarse), (hover: none) {
+  html, body, #__next {
+    cursor: auto;
+  }
+  .custom-cursor { display: none !important; }
+}
+
+.custom-cursor {
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+.cursor-outline {
+  transform: translate3d(-100px, -100px, 0);
+  transition: transform 0.18s cubic-bezier(.2,.9,.3,1), opacity 0.2s;
+  will-change: transform, opacity;
+}
+
+.cursor-dot {
+  transform: translate3d(-100px, -100px, 0);
+  will-change: transform;
+}
+
+.cursor-link {
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border-color: rgba(99,102,241,0.9);
+  width: 56px;
+  height: 56px;
+}
+
+.cursor-button {
+  background: rgba(99,102,241,0.06);
+  border-color: rgba(99,102,241,0.15);
+  width: 52px;
+  height: 52px;
+}
+
+.cursor-text {
+  width: 36px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.cursor-label {
+  transform: translate3d(-100px, -100px, 0);
+  opacity: 0;
+}
+
+.cursor-link + .cursor-label,
+.cursor-outline.cursor-link ~ .cursor-label {
+  opacity: 1;
+}
+
+/* Pet follower styles */
+.pet {
+  width: 56px;
+  height: 56px;
+  transform: translate3d(-200px, -200px, 0);
+  transition: transform 0.08s linear;
+}
+
+.pet .pet-tail {
+  transform-origin: 100% 50%;
+}
+
+.pet-running .pet-tail {
+  animation: tail-wag 300ms linear infinite;
+}
+
+.pet-idle .pet-tail {
+  animation: tail-sway 1200ms ease-in-out infinite;
+}
+
+.pet-shadow {
+  width: 56px;
+  height: 10px;
+  background: rgba(0,0,0,0.28);
+  border-radius: 9999px;
+  transform: translate3d(-200px, -200px, 0) scale(1);
+  filter: blur(6px);
+  transition: transform 0.12s linear, opacity 0.12s linear;
+}
+
+@keyframes tail-wag {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(20deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes tail-sway {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(8deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@media (pointer: coarse), (hover: none) {
+  .pet, .pet-shadow { display: none !important; }
+}
+
 

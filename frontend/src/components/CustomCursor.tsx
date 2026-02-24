@@ -1,113 +1,32 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import React from "react";
+import useCursor from "@/hooks/useCursor";
 
 export default function CustomCursor() {
-  const outerRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
-  const pointerRef = useRef<HTMLDivElement>(null);
-  const isPointerRef = useRef(false);
-  const animationRef = useRef<number | undefined>(undefined);
+  const { wrapperRef, dotRef, outlineRef, labelRef, enabled } = useCursor();
 
-  useEffect(() => {
-    let mouseX = 0;
-    let mouseY = 0;
-    let outerX = 0;
-    let outerY = 0;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      // Check if hovering clickable
-      const target = e.target as HTMLElement;
-      const isClickable =
-        target.tagName === 'BUTTON' ||
-        target.tagName === 'A' ||
-        !!target.closest('button') ||
-        !!target.closest('a') ||
-        target.classList.contains('cursor-pointer') ||
-        target.classList.contains('group');
-
-      if (isClickable !== isPointerRef.current) {
-        isPointerRef.current = isClickable;
-        if (pointerRef.current) {
-          pointerRef.current.setAttribute('data-pointer', isClickable ? 'true' : 'false');
-        }
-      }
-    };
-
-    const updateCursor = () => {
-      // Smooth easing for outer ring
-      outerX += (mouseX - outerX) * 0.2;
-      outerY += (mouseY - outerY) * 0.2;
-
-      // Use transform instead of left/top for better performance
-      if (innerRef.current) {
-        innerRef.current.style.transform = `translate(calc(-50% + ${mouseX}px), calc(-50% + ${mouseY}px))`;
-      }
-
-      if (outerRef.current) {
-        outerRef.current.style.transform = `translate(calc(-50% + ${outerX}px), calc(-50% + ${outerY}px))`;
-      }
-
-      animationRef.current = requestAnimationFrame(updateCursor);
-    };
-
-    const handleMouseEnter = () => {
-      if (outerRef.current) outerRef.current.style.opacity = '1';
-      if (innerRef.current) innerRef.current.style.opacity = '1';
-      animationRef.current = requestAnimationFrame(updateCursor);
-    };
-
-    const handleMouseLeave = () => {
-      if (outerRef.current) outerRef.current.style.opacity = '0';
-      if (innerRef.current) innerRef.current.style.opacity = '0';
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true, capture: true });
-    document.addEventListener('mouseenter', handleMouseEnter);
-    document.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseenter', handleMouseEnter);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-  }, []);
+  if (!enabled) return null;
 
   return (
-    <div ref={pointerRef} data-pointer="false">
-      {/* Inner dot - instant follow */}
+    <div
+      ref={wrapperRef}
+      className="fixed inset-0 pointer-events-none custom-cursor z-9999 mix-blend-screen"
+      aria-hidden
+    >
       <div
-        ref={innerRef}
-        className="fixed hidden pointer-events-none lg:block"
-        style={{
-          width: '8px',
-          height: '8px',
-          backgroundColor: 'rgb(59, 130, 246)',
-          borderRadius: '50%',
-          willChange: 'transform',
-          opacity: 0,
-          transition: 'opacity 0.2s ease-out',
-        }}
+        ref={outlineRef}
+        className="cursor-outline absolute w-12 h-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 bg-white/2 shadow-[0_8px_30px_rgba(99,102,241,0.08)] transition-transform duration-300 will-change-transform"
       />
 
-      {/* Outer ring - smooth follow */}
       <div
-        ref={outerRef}
-        className="fixed hidden pointer-events-none lg:block"
-        style={{
-          width: '32px',
-          height: '32px',
-          border: '1.5px solid rgba(96, 165, 250, 0.6)',
-          borderRadius: '50%',
-          willChange: 'transform',
-          opacity: 0,
-          transition: 'opacity 0.2s ease-out',
-        }}
+        ref={dotRef}
+        className="cursor-dot absolute w-3 h-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-100 shadow-[0_6px_20px_rgba(99,102,241,0.12)] transition-transform duration-150"
+      />
+
+      <div
+        ref={labelRef}
+        className="absolute px-2 py-1 text-xs transition-all duration-200 -translate-x-1/2 -translate-y-6 rounded opacity-0 pointer-events-none cursor-label bg-slate-800/80 text-white/90"
       />
     </div>
   );

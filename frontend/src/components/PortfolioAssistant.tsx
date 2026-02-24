@@ -17,7 +17,7 @@ export default function PortfolioAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! I'm Gopal's Portfolio Assistant. How can I help you?",
+      text: 'Hello! I\'m Gopal\'s Portfolio Assistant. How can I help you?',
       sender: 'assistant',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
@@ -28,7 +28,7 @@ export default function PortfolioAssistant() {
   const quickQuestions = [
     'What projects have you worked on recently?',
     'What technologies do you specialize in?',
-    "Can you summarize your work experience?",
+    'Can you summarize your work experience?',
     'How can I contact you for work?',
   ];
 
@@ -37,15 +37,18 @@ export default function PortfolioAssistant() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const idCounter = useRef<number>(0);
+
   const handleQuickQuestion = (question: string) => {
+    idCounter.current += 1;
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: String(idCounter.current),
       text: question,
       sender: 'user',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    setMessages([...messages, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
 
     // Simulate assistant response
@@ -61,8 +64,9 @@ export default function PortfolioAssistant() {
           'You can reach me via email at gopalchouhan0310@gmail.com, LinkedIn, or GitHub. Feel free to check out my social links in the hero section!',
       };
 
+      idCounter.current += 1;
       const assistantMessage: Message = {
-        id: Date.now().toString(),
+        id: String(idCounter.current),
         text: responses[question] || 'Great question! Feel free to explore my portfolio for more details.',
         sender: 'assistant',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -75,21 +79,23 @@ export default function PortfolioAssistant() {
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
 
+    idCounter.current += 1;
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: String(idCounter.current),
       text: inputValue,
       sender: 'user',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    setMessages([...messages, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
 
     // Simulate assistant response
     setTimeout(() => {
+      idCounter.current += 1;
       const assistantMessage: Message = {
-        id: Date.now().toString(),
-        text: "Thanks for your message! I'm here to help answer questions about Gopal's work and experience. Feel free to ask anything!",
+        id: String(idCounter.current),
+        text: 'Thanks for your message! I\'m here to help answer questions about Gopal\'s work and experience. Feel free to ask anything!',
         sender: 'assistant',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
@@ -132,11 +138,11 @@ export default function PortfolioAssistant() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed bottom-24 right-6 z-[60] flex flex-col w-[480px] max-w-[calc(100vw-32px)] rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-700 shadow-2xl h-[480px]"
+            className="fixed bottom-24 right-6 z-60 flex flex-col w-120 max-w-[calc(100vw-32px)] rounded-2xl bg-linear-to-b from-slate-900 to-slate-950 border border-slate-700 shadow-2xl h-120"
           >
             {/* Header */}
             <div className="flex items-center gap-4 p-4 border-b border-slate-700 bg-slate-800/30">
-              <div className="relative flex-shrink-0 w-12 h-12 overflow-hidden border-2 border-green-500 rounded-full">
+              <div className="relative w-12 h-12 overflow-hidden border-2 border-green-500 rounded-full shrink-0">
                 <Image
                   src="/Logo.png"
                   alt="Gopal's Assistant"
@@ -146,7 +152,7 @@ export default function PortfolioAssistant() {
                 />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-white">Gopal's Assistant</h3>
+                <h3 className="font-semibold text-white">Gopal&apos;s Assistant</h3>
                 <p className="flex items-center gap-1.5 text-xs text-green-400">
                   <span className="inline-block w-2 h-2 bg-green-500 rounded-full" />
                   Online
@@ -171,7 +177,7 @@ export default function PortfolioAssistant() {
                         : 'bg-slate-700 text-gray-100 rounded-bl-none'
                     }`}
                   >
-                    <p className="break-words">{message.text}</p>
+                    <p className="wrap-break-word">{message.text}</p>
                     <span className="block mt-1 text-xs opacity-60">{message.timestamp}</span>
                   </div>
                 </motion.div>

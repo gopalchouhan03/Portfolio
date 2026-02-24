@@ -28,11 +28,11 @@ async function fetchFromBackend(): Promise<GitHubContributionData> {
 
     // Transform data from backend format
     const contributions = (json.data?.weeks || [])
-      .flatMap((week: any) =>
-        week.contributionDays.map((day: any) => ({
+      .flatMap((week: { contributionDays?: Array<{ date: string; contributionCount?: number }> }) =>
+        (week.contributionDays || []).map((day) => ({
           date: day.date,
-          count: day.contributionCount,
-          level: getContributionLevel(day.contributionCount),
+          count: day.contributionCount || 0,
+          level: getContributionLevel(day.contributionCount || 0),
         }))
       );
 

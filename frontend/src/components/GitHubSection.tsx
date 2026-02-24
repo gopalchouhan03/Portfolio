@@ -11,12 +11,12 @@ export default function GitHubSection() {
   // Convert contribution days to GitHub-style grid (7 rows x weeks columns)
   const generateHeatmapData = () => {
     if (!data?.contributions || data.contributions.length === 0) {
-      return { monthLabels: [], weekGrid: [] };
+      return { monthLabels: [], weekGrid: [] as Array<Array<{ count: number; level: number; date: string } | null>> };
     }
 
     // Create a map of date -> contribution data for quick lookup
-    const contributionMap = new Map();
-    data.contributions.forEach((day: any) => {
+    const contributionMap = new Map<string, { count: number; level: number }>();
+    data.contributions.forEach((day) => {
       contributionMap.set(day.date, {
         count: day.count || 0,
         level: day.level || 0,
@@ -24,7 +24,7 @@ export default function GitHubSection() {
     });
 
     // Get start and end dates
-    const dates = data.contributions.map((d: any) => new Date(d.date + 'T00:00:00'));
+    const dates = data.contributions.map((d) => new Date(d.date + 'T00:00:00'));
     const startDate = new Date(dates[0]);
     const endDate = new Date(dates[dates.length - 1]);
 
@@ -33,7 +33,7 @@ export default function GitHubSection() {
     adjustedStart.setDate(adjustedStart.getDate() - adjustedStart.getDay());
 
     // Build the grid: 7 rows (days of week) x N columns (weeks)
-    const weekGrid: any[][] = Array(7).fill(null).map(() => []);
+    const weekGrid: Array<Array<{ count: number; level: number; date: string } | null>> = Array.from({ length: 7 }).map(() => []);
     const monthLabels: { month: string; weekIndex: number }[] = [];
     let lastMonth = '';
     let weekIndex = 0;
@@ -69,7 +69,7 @@ export default function GitHubSection() {
     return { monthLabels, weekGrid };
   };
 
-  const { monthLabels, weekGrid } = useMemo(() => generateHeatmapData(), [data]);
+  const { monthLabels, weekGrid } = useMemo(() => generateHeatmapData(), [data, generateHeatmapData]);
 
   const getColorIntensity = (value: number) => {
     if (value === 0) return 'bg-white/5';
@@ -142,7 +142,7 @@ export default function GitHubSection() {
             className="p-8 border glass-card border-red-500/20 bg-red-500/5"
           >
             <div className="flex items-center gap-3 text-red-400">
-              <AlertCircle className="flex-shrink-0 w-5 h-5" />
+              <AlertCircle className="w-5 h-5 shrink-0" />
               <div>
                 <p className="font-semibold">Unable to load GitHub data</p>
                 <p className="mt-1 text-sm text-red-300">Make sure your GitHub token is valid and configured.</p>

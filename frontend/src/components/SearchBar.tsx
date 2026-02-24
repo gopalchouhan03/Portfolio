@@ -108,8 +108,8 @@ export default function SearchBar() {
   // Filter suggestions based on search query
   useEffect(() => {
     if (!searchQuery.trim()) {
-      setFilteredSuggestions(suggestions);
-      return;
+      const t = setTimeout(() => setFilteredSuggestions(suggestions), 0);
+      return () => clearTimeout(t);
     }
 
     const query = searchQuery.toLowerCase();
@@ -119,7 +119,8 @@ export default function SearchBar() {
         suggestion.description.toLowerCase().includes(query) ||
         suggestion.type.toLowerCase().includes(query)
     );
-    setFilteredSuggestions(filtered);
+    const t = setTimeout(() => setFilteredSuggestions(filtered), 0);
+    return () => clearTimeout(t);
   }, [searchQuery]);
 
   // Handle keyboard shortcuts
@@ -201,7 +202,7 @@ export default function SearchBar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full right-0 mt-2 w-[480px] max-w-[calc(100vw-32px)] bg-slate-900 border border-white/10 rounded-lg shadow-2xl z-[100] overflow-hidden"
+            className="absolute top-full right-0 mt-2 w-120 max-w-[calc(100vw-32px)] bg-slate-900 border border-white/10 rounded-lg shadow-2xl z-100 overflow-hidden"
           >
             {/* Search Input */}
             <div className="p-4 border-b border-white/10 bg-slate-950">
@@ -230,7 +231,7 @@ export default function SearchBar() {
             </div>
 
             {/* Suggestions List */}
-            <div className="max-h-[400px] overflow-y-auto">
+            <div className="overflow-y-auto max-h-100">
               {filteredSuggestions.length > 0 ? (
                 <div className="p-2">
                   {/* Group suggestions by type */}
@@ -273,7 +274,7 @@ export default function SearchBar() {
                                     {suggestion.description}
                                   </p>
                                 </div>
-                                <ExternalLink className="w-4 h-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5" />
+                                <ExternalLink className="w-4 h-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-0.5" />
                               </div>
                             </motion.div>
                           </Link>
@@ -285,7 +286,7 @@ export default function SearchBar() {
               ) : (
                 <div className="p-8 text-center">
                   <p className="text-sm text-gray-400">
-                    No results found for "{searchQuery}"
+                    No results found for &quot;{searchQuery}&quot;
                   </p>
                   <p className="mt-2 text-xs text-gray-500">
                     Try searching for projects, blogs, or skills

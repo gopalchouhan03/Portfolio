@@ -19,7 +19,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const htmlElement = document.documentElement;
     htmlElement.classList.add('dark');
     document.documentElement.style.colorScheme = 'dark';
-    setMounted(true);
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
   }, []);
 
   // Don't render children until mounted to prevent hydration issues
