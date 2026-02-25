@@ -7,6 +7,11 @@ const config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-sora)', 'Sora', 'ui-sans-serif', 'sans-serif'],
+        mono: ['var(--font-mono)', 'JetBrains Mono', 'ui-monospace', 'monospace'],
+      },
       colors: {
         background: 'rgb(10 10 10 / <alpha-value>)',
         foreground: 'rgb(237 237 237 / <alpha-value>)',

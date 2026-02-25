@@ -1,21 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Sora, JetBrains_Mono } from 'next/font/google';
 import "./globals.css";
 import PortfolioAssistant from "@/components/PortfolioAssistant";
 import CustomCursor from "@/components/CustomCursor";
 import VisitorTracker from "@/components/VisitorTracker";
-import { ThemeProvider } from "@/context/ThemeContext";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+  weight: ['300', '400', '600', '700']
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
+const sora = Sora({
+  subsets: ['latin'],
+  variable: '--font-sora',
+  display: 'swap',
+  weight: ['600', '700', '800']
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+  weight: ['400', '600']
 });
 
 export const viewport: Viewport = {
@@ -78,15 +85,13 @@ export default function RootLayout({
         <link rel="icon" href="/Logo.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-slate-950 text-slate-100 transition-colors duration-300`}
+        className={`${inter.variable} ${sora.variable} ${jetbrains.variable} antialiased overflow-x-hidden bg-slate-950 text-slate-100 transition-colors duration-300 cursor-none font-sans`}
         suppressHydrationWarning
       >
-        <ThemeProvider>
                 <VisitorTracker />
                 <CustomCursor />
-          {children}
-          <PortfolioAssistant />
-        </ThemeProvider>
+        {children}
+        <PortfolioAssistant />
       </body>
     </html>
   );

@@ -133,7 +133,7 @@ export const projectsData: Project[] = [
     description: 'A personal blogging platform to share technical learnings, tutorials, and thoughts.',
     longDescription:
       'MyBlog is a personal blog platform built to document my learning journey, technical concepts, and experiences. It focuses on clean design, readability, and performance, making content easy to consume and manage.',
-    tags: ['Next.js', 'MDX', 'Tailwind CSS'],
+    tags: ['Next.js', 'Node.js', 'Express', 'MongoDB'],
     status: 'Published',
     statusColor: 'bg-blue-500/20 text-blue-400',
     cover: '/images/projects/MyBlog.png ',
@@ -187,7 +187,7 @@ export const projectsData: Project[] = [
     description: 'A real-time video calling application built using WebRTC and Socket.IO.',
     longDescription:
       'Nexus VideoMeet is a real-time video communication application that enables peer-to-peer video calls. It uses WebRTC for media streaming and Socket.IO for signaling, focusing on low latency and smooth connections.',
-    tags: ['React', 'WebRTC', 'Socket.IO', 'Node.js'],
+    tags: ['React','Node.js'],
     status: 'Operational',
     statusColor: 'bg-green-500/20 text-green-400',
     cover: '/images/projects/Nexus_VideoMeet.png',

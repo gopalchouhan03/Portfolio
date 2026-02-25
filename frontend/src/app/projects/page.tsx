@@ -31,7 +31,7 @@ const itemVariants = {
 
 export default function ProjectsPage() {
   return (
-    <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
+    <main className="min-h-screen transition-colors duration-300 bg-slate-950 text-slate-100">
       <Navbar />
 
       <div className="max-w-6xl px-4 py-20 mx-auto sm:px-6 lg:px-8">
@@ -42,10 +42,10 @@ export default function ProjectsPage() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <h1 className="mb-4 text-4xl font-bold sm:text-5xl text-slate-900 dark:text-slate-100">
+          <h1 className="mb-4 text-4xl font-bold sm:text-5xl text-slate-100">
             All Projects
           </h1>
-          <p className="text-lg text-slate-600 dark:text-gray-400">
+          <p className="text-lg text-gray-300">
             A collection of projects showcasing what I’ve built and learned.
           </p>
         </motion.div>
@@ -81,7 +81,7 @@ export default function ProjectsPage() {
                 <div className="flex flex-col justify-between md:col-span-2">
                   <div>
                     <div className="flex items-start justify-between gap-4 mt-6 mb-6">
-                      <h2 className="text-2xl font-bold sm:text-3xl text-slate-900 dark:text-slate-100">
+                      <h2 className="text-2xl font-bold sm:text-3xl text-slate-100">
                         {project.title}
                       </h2>
                       <span className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ${project.statusColor}`}>
@@ -89,17 +89,17 @@ export default function ProjectsPage() {
                       </span>
                     </div>
 
-                    <p className="mb-4 text-base text-slate-700 dark:text-gray-300">
+                    <p className="mb-4 text-base text-gray-300">
                       {project.longDescription}
                     </p>
 
                     {/* Features */}
                     <div className="mb-6">
-                      <h3 className="mb-3 font-semibold text-slate-900 dark:text-slate-100">Key Features:</h3>
+                      <h3 className="mb-3 font-semibold text-slate-100">Key Features:</h3>
                       <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                         {project.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-slate-600 dark:text-gray-400">
-                            <span className="mt-1 text-blue-500 dark:text-blue-400">✓</span>
+                          <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
+                            <span className="mt-1 text-blue-400">✓</span>
                             {feature}
                           </li>
                         ))}
@@ -111,7 +111,7 @@ export default function ProjectsPage() {
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="inline-block px-3 py-1 text-xs font-medium border rounded-full border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-400"
+                          className="inline-block px-3 py-1 text-xs font-medium border rounded-full border-white/10 bg-white/5 text-gray-300"
                         >
                           {tag}
                         </span>
@@ -122,7 +122,7 @@ export default function ProjectsPage() {
                   {/* Links */}
                   <div className="flex gap-3">
                     <Link href={`/projects/${project.id}`}>
-                      <button className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 transition-colors border rounded-lg border-blue-500/50 bg-blue-500/10 dark:text-blue-400 hover:bg-blue-500/20">
+                      <button className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-blue-400 transition-colors border rounded-lg border-blue-500/50 bg-blue-500/10 hover:bg-white/10">
                         <ArrowRight size={16} />
                         View Details
                       </button>
@@ -132,7 +132,7 @@ export default function ProjectsPage() {
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-400 hover:bg-slate-200 dark:hover:bg-white/10"
+                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-white/10 bg-white/5 text-gray-300 hover:bg-white/10"
                       >
                         <ExternalLink size={16} />
                         Demo
@@ -143,7 +143,7 @@ export default function ProjectsPage() {
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-400 hover:bg-slate-200 dark:hover:bg-white/10"
+                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-white/10 bg-white/5 text-gray-300 hover:bg-white/10"
                       >
                         <Github size={16} />
                         GitHub

@@ -140,35 +140,35 @@ export default function Footer() {
           {visitorCount !== null ? (
             <div className="flex flex-col items-center gap-2 px-4 py-3 transition-colors duration-300 border rounded-full sm:flex-row sm:gap-3 sm:px-6 border-blue-500/30 bg-blue-500/10 backdrop-blur-md">
               <Eye className="w-5 h-5 text-blue-400 shrink-0" />
-              <span className="text-xs font-medium text-center sm:text-sm text-slate-900 dark:text-slate-100 sm:text-left">
-                You are the <span className="font-bold text-blue-600 dark:text-blue-400">{visitorCount.toLocaleString()}</span>
+              <span className="text-xs font-medium text-center sm:text-sm text-gray-300 sm:text-left">
+                You are the <span className="font-bold text-blue-300">{visitorCount.toLocaleString()}</span>
                 <sup className="text-xs">th</sup> visitor
               </span>
             </div>
           ) : visitorError ? (
-            <div className="flex flex-col items-center gap-2 px-4 py-3 transition-colors duration-300 border rounded-full sm:flex-row sm:gap-3 sm:px-6 border-amber-500/30 bg-amber-500/10 backdrop-blur-md">
-              <Eye className="w-5 h-5 shrink-0 text-amber-400" />
-              <span className="text-xs font-medium text-center sm:text-sm text-amber-900 dark:text-amber-100 sm:text-left">
-                Visitor counter unavailable 
+            <div className="flex flex-col items-center gap-2 px-4 py-3 transition-colors duration-300 border rounded-full sm:flex-row sm:gap-3 sm:px-6 border-amber-500/30 bg-amber-600/10 backdrop-blur-md">
+              <Eye className="w-5 h-5 shrink-0 text-amber-300" />
+              <span className="text-xs font-medium text-center sm:text-sm text-amber-200 sm:text-left">
+                Visitor counter unavailable
                 <br className="sm:hidden" />
                 ({visitorError})
               </span>
             </div>
           ) : (
             <div className="flex items-center gap-2 px-4 py-3">
-              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-              <span className="text-xs font-medium sm:text-sm text-slate-400">Loading visitor counter...</span>
+              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+              <span className="text-xs font-medium sm:text-sm text-gray-400">Loading visitor counter...</span>
             </div>
           )}
         </div>
 
         {/* Divider */}
-        <div className="h-px mb-8 transition-colors duration-300 bg-linear-to-r from-transparent via-slate-300 dark:via-white/10 to-transparent" aria-hidden="true" />
+        <div className="h-px mb-8 transition-colors duration-300 bg-linear-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
 
         {/* Bottom */}
-        <div className="flex flex-col items-center justify-center gap-4 text-xs sm:text-sm text-slate-600 dark:text-gray-500">
+        <div className="flex flex-col items-center justify-center gap-4 text-xs sm:text-sm text-gray-300">
           <p className="text-center">
-            Design &amp; Developed by <span className="font-semibold text-slate-900 dark:text-slate-100">Gopal~Codes</span>
+            Design &amp; Developed by <span className="font-semibold text-slate-100">Gopal~Codes</span>
           </p>
           <p className="text-center">© {new Date().getFullYear()}. All rights reserved.</p>
         </div>

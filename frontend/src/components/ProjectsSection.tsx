@@ -20,6 +20,7 @@ import {
   SiExpress,
   SiNextdotjs,
   SiSupabase,
+  SiWeb3Dotjs,
 } from 'react-icons/si';
 
 /* icon maps unchanged */
@@ -31,7 +32,7 @@ const techIconMap: Record<string, IconType> = {
   'Express': SiExpress,
   'TypeScript': SiTypescript,
   'PostgreSQL': SiPostgresql,
-  'WebSocket': SiNodedotjs,
+  'WebSocket': SiWeb3Dotjs,
   'ML': SiNodedotjs,
   'Supabase': SiSupabase,
   'OpenAI': SiNodedotjs,

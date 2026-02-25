@@ -30,7 +30,7 @@ const itemVariants = {
 export default function BlogsPage() {
   const blogs = blogsData;
   return (
-    <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
+    <main className="min-h-screen transition-colors duration-300 bg-slate-950 text-slate-100">
       <Navbar />
 
       <div className="max-w-4xl px-4 py-20 mx-auto sm:px-6 lg:px-8">
@@ -41,10 +41,10 @@ export default function BlogsPage() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <h1 className="mb-4 text-4xl font-bold sm:text-5xl text-slate-900 dark:text-slate-100">
+          <h1 className="mb-4 text-4xl font-bold sm:text-5xl text-slate-100">
             Blog Articles
           </h1>
-          <p className="text-lg text-slate-600 dark:text-gray-400">
+          <p className="text-lg text-gray-300">
             Thoughts on design, development, and technology
           </p>
         </motion.div>
@@ -78,8 +78,8 @@ export default function BlogsPage() {
                 <div className="flex flex-col justify-between md:col-span-3">
                   <div>
                     {/* Meta */}
-                    <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-slate-600 dark:text-gray-400">
-                      <span className="inline-block px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full dark:bg-blue-500/20 dark:text-blue-400">
+                    <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-300">
+                      <span className="inline-block px-3 py-1 text-xs font-medium text-blue-400 bg-blue-800/40 rounded-full">
                         {blog.category}
                       </span>
                       <div className="flex items-center gap-1">
@@ -90,10 +90,10 @@ export default function BlogsPage() {
                     </div>
 
                     {/* Title & Description */}
-                    <h2 className="mb-3 text-2xl font-bold sm:text-3xl text-slate-900 dark:text-slate-100">
+                    <h2 className="mb-3 text-2xl font-bold sm:text-3xl text-slate-100">
                       {blog.title}
                     </h2>
-                    <p className="mb-4 text-slate-700 dark:text-gray-300 line-clamp-3">
+                    <p className="mb-4 text-gray-300 line-clamp-3">
                       {blog.description}
                     </p>
 
@@ -102,7 +102,7 @@ export default function BlogsPage() {
                       {blog.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="inline-block px-3 py-1 text-xs font-medium border rounded-full border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-400"
+                          className="inline-block px-3 py-1 text-xs font-medium border rounded-full border-white/10 bg-white/5 text-gray-300"
                         >
                           {tag}
                         </span>
@@ -113,7 +113,7 @@ export default function BlogsPage() {
                   {/* CTA */}
                   <Link
                     href={`/blogs/${blog.id}`}
-                    className="flex items-center gap-2 mt-6 font-semibold text-blue-600 transition-all duration-300 dark:text-blue-400 group hover:gap-3"
+                    className="flex items-center gap-2 mt-6 font-semibold text-blue-400 transition-all duration-300 group hover:gap-3"
                   >
                     Read Article
                     <ArrowRight size={18} />

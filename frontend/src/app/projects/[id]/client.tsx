@@ -38,10 +38,10 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
 
   if (!project) {
     return (
-      <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
+      <main className="min-h-screen transition-colors duration-300 bg-slate-950 text-slate-100">
         <Navbar />
         <div className="max-w-6xl px-4 py-20 mx-auto text-center">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">Project not found</h1>
+          <h1 className="text-4xl font-bold text-slate-100">Project not found</h1>
           <Link href="/projects">
             <button className="mt-8 btn-primary">Back to Projects</button>
           </Link>
@@ -52,7 +52,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
   }
 
   return (
-    <main className="min-h-screen transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
+  <main className="min-h-screen transition-colors duration-300 bg-slate-950 text-slate-100">
       <Navbar />
 
       <article className="max-w-4xl px-4 py-20 mx-auto sm:px-6 lg:px-8">
@@ -65,7 +65,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
         >
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 text-sm font-medium text-blue-500 transition-colors hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
+            className="inline-flex items-center gap-2 text-sm font-medium text-blue-500 transition-colors hover:text-blue-600"
           >
             <ArrowLeft size={16} />
             Back to Projects
@@ -94,10 +94,10 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           {/* Title & Status */}
           <div className="flex items-start justify-between gap-4 mb-6">
             <div>
-              <h1 className="mb-2 text-4xl font-bold sm:text-5xl text-slate-900 dark:text-slate-100">
+              <h1 className="mb-2 text-4xl font-bold sm:text-5xl text-slate-100">
                 {project.title}
               </h1>
-              <p className="text-lg text-slate-600 dark:text-gray-400">
+              <p className="text-lg text-gray-300">
                 {project.description}
               </p>
             </div>
@@ -112,14 +112,14 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="flex gap-3 py-4 border-y border-slate-200 dark:border-white/10"
+            className="flex gap-3 py-4 border-y border-white/10"
           >
             {project.demo && (
               <a
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-blue-600 transition-colors border rounded-lg border-blue-500/50 bg-blue-500/10 dark:text-blue-400 hover:bg-blue-500/20"
+                className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-blue-400 transition-colors border rounded-lg border-blue-500/50 bg-blue-500/10 hover:bg-white/10"
               >
                 <ExternalLink size={18} />
                 View Demo
@@ -130,7 +130,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-colors border rounded-lg border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-400 hover:bg-slate-200 dark:hover:bg-white/10"
+                className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-gray-300 transition-colors border rounded-lg border-white/10 bg-white/5 hover:bg-white/10"
               >
                 <Github size={18} />
                 View Source Code
@@ -139,7 +139,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           </motion.div>
 
           {/* Social Actions */}
-          <div className="flex items-center gap-4 py-4 border-b border-slate-200 dark:border-white/10">
+          <div className="flex items-center gap-4 py-4 border-b border-slate-200">
             <button
               onClick={() => {
                 const newLiked = !liked;
@@ -151,7 +151,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                   localStorage.setItem(`project-likes-${project.id}`, newCount.toString());
                 }
               }}
-              className="flex items-center gap-2 text-sm font-medium transition-colors text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
+              className="flex items-center gap-2 text-sm font-medium transition-colors text-slate-600 hover:text-blue-500"
             >
               <Heart size={18} fill={liked ? 'currentColor' : 'none'} color={liked ? 'currentColor' : undefined} />
               {liked ? 'Liked' : 'Like'} {likeCount > 0 && `(${likeCount})`}
@@ -170,7 +170,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                   alert('Project link copied to clipboard!');
                 }
               }}
-              className="flex items-center gap-2 text-sm font-medium transition-colors text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
+              className="flex items-center gap-2 text-sm font-medium transition-colors text-slate-600 hover:text-blue-500"
             >
               <Share2 size={18} />
               Share
@@ -184,12 +184,12 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="p-6 mb-12 glass-card rounded-xl"
+            className="p-6 mb-12 glass-card rounded-xl"
         >
-          <h2 className="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="mb-4 text-2xl font-bold text-slate-100">
             Overview
           </h2>
-          <p className="text-base leading-relaxed text-slate-700 dark:text-gray-300">
+          <p className="text-base leading-relaxed text-gray-300">
             {project.overview}
           </p>
         </motion.section>
@@ -202,7 +202,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="mb-6 text-2xl font-bold text-slate-100">
             What Users Can Do
           </h2>
           <ul className="space-y-3">
@@ -215,10 +215,10 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 viewport={{ once: true }}
                 className="flex items-start gap-3 p-4 rounded-lg glass-card"
               >
-                <span className="text-lg font-bold text-blue-500 shrink-0 dark:text-blue-400">
+                <span className="text-lg font-bold text-blue-400 shrink-0">
                   •
                 </span>
-                <span className="text-slate-700 dark:text-gray-300">{item}</span>
+                <span className="text-gray-300">{item}</span>
               </motion.li>
             ))}
           </ul>
@@ -232,7 +232,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="mb-6 text-2xl font-bold text-slate-100">
             Why I Built This
           </h2>
           <div className="space-y-3">
@@ -243,12 +243,12 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
                 viewport={{ once: true }}
-                className="flex items-start gap-3 p-4 border border-blue-200 rounded-lg bg-blue-500/5 dark:bg-blue-500/10 dark:border-blue-500/20"
+                className="flex items-start gap-3 p-4 border rounded-lg border-blue-500/20 bg-blue-500/5"
               >
-                <span className="font-semibold text-blue-600 shrink-0 dark:text-blue-400">
+                <span className="font-semibold text-blue-400 shrink-0">
                   {idx + 1}.
                 </span>
-                <span className="text-slate-700 dark:text-gray-300">{reason}</span>
+                <span className="text-gray-300">{reason}</span>
               </motion.div>
             ))}
           </div>
@@ -262,7 +262,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           viewport={{ once: true }}
           className="p-6 mb-12 glass-card rounded-xl"
         >
-          <h2 className="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="mb-4 text-2xl font-bold text-slate-100">
             Tech Stack
           </h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -273,10 +273,10 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
                 viewport={{ once: true }}
-                className="flex items-center gap-3 p-3 border rounded-lg bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10"
+                className="flex items-center gap-3 p-3 border rounded-lg bg-white/5 border-white/10"
               >
-                <span className="text-blue-500 dark:text-blue-400">✓</span>
-                <span className="text-slate-700 dark:text-gray-300">{tech}</span>
+                <span className="text-blue-400">✓</span>
+                <span className="text-gray-300">{tech}</span>
               </motion.div>
             ))}
           </div>
@@ -290,7 +290,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="mb-6 text-2xl font-bold text-slate-100">
             Future Plans
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -301,9 +301,9 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
                 viewport={{ once: true }}
-                className="p-4 border-l-4 border-blue-500 rounded-lg glass-card dark:border-blue-400"
+                className="p-4 border-l-4 border-blue-500 rounded-lg glass-card"
               >
-                <p className="text-slate-700 dark:text-gray-300">{plan}</p>
+                <p className="text-gray-300">{plan}</p>
               </motion.div>
             ))}
           </div>
@@ -319,11 +319,11 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
         >
           {prevProject ? (
             <Link href={`/projects/${prevProject.id}`}>
-              <div className="p-6 transition-colors rounded-lg cursor-pointer glass-card hover:bg-slate-100 dark:hover:bg-white/10 group">
-                <p className="mb-2 text-xs font-semibold uppercase text-slate-600 dark:text-gray-400">
+              <div className="p-6 transition-colors rounded-lg cursor-pointer glass-card hover:bg-white/10 group">
+                <p className="mb-2 text-xs font-semibold text-gray-300 uppercase">
                   ← Previous Project
                 </p>
-                <h3 className="text-lg font-bold transition-colors text-slate-900 dark:text-slate-100 group-hover:text-blue-500">
+                <h3 className="text-lg font-bold transition-colors text-slate-100 group-hover:text-blue-400">
                   {prevProject.title}
                 </h3>
               </div>
@@ -333,11 +333,11 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           )}
           {nextProject ? (
             <Link href={`/projects/${nextProject.id}`}>
-              <div className="p-6 text-right transition-colors rounded-lg cursor-pointer glass-card hover:bg-slate-100 dark:hover:bg-white/10 group">
-                <p className="mb-2 text-xs font-semibold uppercase text-slate-600 dark:text-gray-400">
+              <div className="p-6 text-right transition-colors rounded-lg cursor-pointer glass-card hover:bg-white/10 group">
+                <p className="mb-2 text-xs font-semibold text-gray-300 uppercase">
                   Next Project →
                 </p>
-                <h3 className="text-lg font-bold transition-colors text-slate-900 dark:text-slate-100 group-hover:text-blue-500">
+                <h3 className="text-lg font-bold transition-colors text-slate-100 group-hover:text-blue-400">
                   {nextProject.title}
                 </h3>
               </div>
@@ -356,7 +356,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <h2 className="mb-6 text-2xl font-bold text-slate-100">
               Related Projects
             </h2>
             <div className="grid gap-6 sm:grid-cols-2">
@@ -372,27 +372,27 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
                       />
                     </div>
                     <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="text-lg font-semibold transition-colors text-slate-900 dark:text-slate-100 group-hover:text-blue-500">
+                      <h3 className="text-lg font-semibold transition-colors text-slate-900 group-hover:text-blue-500">
                         {relatedProject.title}
                       </h3>
                       <span className={`whitespace-nowrap rounded-full px-2 py-1 text-xs font-semibold ${relatedProject.statusColor}`}>
                         {relatedProject.status}
                       </span>
                     </div>
-                    <p className="mb-3 text-sm text-slate-600 dark:text-gray-400 line-clamp-2">
+                    <p className="mb-3 text-sm text-slate-600 line-clamp-2">
                       {relatedProject.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {relatedProject.tags.slice(0, 2).map((tag) => (
                         <span
                           key={tag}
-                          className="inline-block px-2 py-1 text-xs font-medium rounded bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-400"
+                          className="inline-block px-2 py-1 text-xs font-medium rounded bg-slate-100 text-slate-700"
                         >
                           {tag}
                         </span>
                       ))}
                       {relatedProject.tags.length > 2 && (
-                        <span className="text-xs text-slate-600 dark:text-gray-400">
+                        <span className="text-xs text-slate-600">
                           +{relatedProject.tags.length - 2}
                         </span>
                       )}
