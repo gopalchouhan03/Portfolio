@@ -5,6 +5,7 @@ import { ArrowDown, Link as LinkIcon, Mail, Github, Linkedin, Twitter, Instagram
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import Particles from './Particles';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -63,6 +64,24 @@ export default function HeroSection() {
             transition={{ duration: 8, repeat: Infinity, delay: 1, ease: 'easeInOut' }}
             className="absolute rounded-full -bottom-40 -left-40 h-80 w-80 bg-purple-500/20 blur-3xl"
           />
+        </div>
+
+        {/* Particles canvas behind content */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+            <Particles
+              // match blue-purple-pink gradient used in hero text
+              particleColors={["#3b82f6", "#a855f7", "#ec4899"]}
+              particleCount={200}
+              particleSpread={10}
+              speed={0.1}
+              particleBaseSize={90}
+              moveParticlesOnHover
+              alphaParticles={false}
+              disableRotation={false}
+              pixelRatio={1}
+            />
+          </div>
         </div>
 
         <div className="relative z-10 max-w-3xl text-center">

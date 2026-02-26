@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Sora, JetBrains_Mono } from 'next/font/google';
 import "./globals.css";
-import PortfolioAssistant from "@/components/PortfolioAssistant";
-import CustomCursor from "@/components/CustomCursor";
-import VisitorTracker from "@/components/VisitorTracker";
+import { LayoutClient } from "./layout-client";
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -88,10 +86,9 @@ export default function RootLayout({
         className={`${inter.variable} ${sora.variable} ${jetbrains.variable} antialiased overflow-x-hidden bg-slate-950 text-slate-100 transition-colors duration-300 cursor-none font-sans`}
         suppressHydrationWarning
       >
-                <VisitorTracker />
-                <CustomCursor />
-        {children}
-        <PortfolioAssistant />
+        <LayoutClient>
+          {children}
+        </LayoutClient>
       </body>
     </html>
   );

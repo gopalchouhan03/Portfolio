@@ -73,16 +73,16 @@ function Navbar() {
               <motion.div
                 initial={{ opacity: 0, x: -15 }}
                 animate={pathname === '/' ? { opacity: 0, x: -15 } : { opacity: 1, x: 0, transition: { delay: 0.2 } }}
-                whileHover={pathname !== '/' ? { x: -8, scale: 1.2 } : undefined}
+                whileHover={pathname !== '/' ? { x: -8, scale: 1.12 } : undefined}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="hidden sm:block"
+                className="block"
               >
-                <motion.div
-                  animate={pathname !== '/' ? { x: [0, -4, 0] } : undefined}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <ArrowLeft size={20} className="text-blue-400 transition-colors drop-shadow-lg group-hover:text-blue-300" />
-                </motion.div>
+                  <motion.div
+                    animate={pathname !== '/' ? { x: [0, -4, 0] } : undefined}
+                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 transition-colors drop-shadow-lg group-hover:text-blue-300" />
+                  </motion.div>
               </motion.div>
             </Link>
           </motion.div>
