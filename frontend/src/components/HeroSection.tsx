@@ -138,7 +138,7 @@ export default function HeroSection() {
               className="max-w-2xl mx-auto mb-8 text-lg leading-relaxed text-muted"
             >
               I build clean, scalable web applications with modern <span className="font-semibold text-foreground">JavaScript</span>,{' '}
-              <span className="font-semibold text-foreground">React</span>, and{' '}
+              <span className="font-semibold text-foreground">React</span>,{' '}
               <span className="font-semibold text-foreground">and</span> backend systems{' '}
               <span className="font-semibold text-foreground">with</span> a strong curiosity{' '}
               <span className="font-semibold text-foreground">for AI and emerging technologies.</span>
