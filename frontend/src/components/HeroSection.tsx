@@ -33,11 +33,11 @@ export default function HeroSection() {
 
   const socialLinks = [
     { icon: Twitter, label: 'Twitter', href: 'https://twitter.com', color: 'text-blue-400' },
-    { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/gopal-chouhan-0429b931a ', color: 'text-blue-600' },
+    { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/gopal-chouhan03', color: 'text-blue-600' },
     { icon: Github, label: 'GitHub', href: 'https://github.com/gopalchouhan03', color: 'text-gray-400' },
     { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/gk_rajput_03', color: 'text-pink-500' },
     { icon: Mail, label: 'Email', href: 'mailto:gopalchouhan0310@gmail.com', color: 'text-red-400' },
-    { icon: Pin, label: 'Portfolio', href: 'https://example.com', color: 'text-purple-400' },
+    { icon: Pin, label: 'Portfolio', href: 'https://gopalxportfolio.vercel.app', color: 'text-purple-400' },
   ];
 
   const handleLogoClick = () => {
@@ -164,7 +164,7 @@ export default function HeroSection() {
                 </motion.span>
               </motion.button>
               <motion.a
-                href="/Gopal_Chouhan_Full_Stack_Developer_Resume.pdf"
+                href="/Gopal_Chouhan_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05, borderColor: 'rgba(255,255,255,0.4)' }}
