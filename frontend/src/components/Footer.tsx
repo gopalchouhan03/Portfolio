@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Mail, Eye } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const QUOTES = [
@@ -24,88 +23,25 @@ const QUOTES = [
 
 export default function Footer() {
   const [dailyQuote, setDailyQuote] = useState<typeof QUOTES[0] | null>(null);
-  const [visitorCount, setVisitorCount] = useState<number | null>(null);
-  const [visitorError, setVisitorError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch real visitor count from API and increment
-    const fetchVisitorCount = async () => {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      console.log('🔄 Visitor Counter: Connecting to', apiUrl);
-      
-      try {
-        // First test if backend is alive with health check
-        try {
-          const healthRes = await fetch(`${apiUrl}/health`, { method: 'GET' });
-          if (healthRes.ok) {
-            const healthData = await healthRes.json();
-            console.log('✅ Backend health check passed:', healthData);
-          }
-        } catch (healthErr) {
-          console.warn('⚠️ Health check failed (non-critical):', healthErr);
-        }
-        
-        // Now increment visitor count
-        const postResponse = await fetch(`${apiUrl}/visitor-count`, { 
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ inc: 1 }),
-        });
-        
-        if (postResponse.ok) {
-          const data = await postResponse.json();
-          console.log('✅ Visitor count incremented:', data);
-          setVisitorCount(data.count || null);
-          setVisitorError(null);
-          return;
-        } else {
-          const errorText = await postResponse.text();
-          console.error(`❌ POST returned ${postResponse.status}:`, errorText);
-          throw new Error(`HTTP ${postResponse.status}: ${postResponse.statusText}`);
-        }
-      } catch (postErr) {
-        console.error('❌ POST /visitor-count failed:', postErr);
-        
-        // Try fallback: just fetch current count
-        try {
-          console.log('🔄 Trying fallback GET request...');
-          const getResponse = await fetch(`${apiUrl}/visitor-count`, { method: 'GET' });
-          
-          if (getResponse.ok) {
-            const data = await getResponse.json();
-            console.log('✅ Visitor count fetched (fallback):', data);
-            setVisitorCount(data.count || null);
-            setVisitorError(null);
-            return;
-          } else {
-            throw new Error(`HTTP ${getResponse.status}`);
-          }
-        } catch (getErr) {
-          console.error('❌ GET /visitor-count failed:', getErr);
-          const errorMsg = postErr instanceof Error ? postErr.message : 'Connection error';
-          console.error(`❌ Final error: ${errorMsg}`);
-          setVisitorError(errorMsg);
-          setVisitorCount(null);
-        }
+    const timeout = setTimeout(() => {
+      const today = new Date().toDateString();
+      const storedDate = localStorage.getItem('quoteDate');
+      const storedQuote = localStorage.getItem('dailyQuote');
+
+      if (storedDate === today && storedQuote) {
+        setDailyQuote(JSON.parse(storedQuote));
+      } else {
+        const randomIndex = Math.floor(Math.random() * QUOTES.length);
+        const newQuote = QUOTES[randomIndex];
+        localStorage.setItem('quoteDate', today);
+        localStorage.setItem('dailyQuote', JSON.stringify(newQuote));
+        setDailyQuote(newQuote);
       }
-    };
+    }, 0);
 
-    fetchVisitorCount();
-
-    // Get daily quote based on date
-    const today = new Date().toDateString();
-    const storedDate = localStorage.getItem('quoteDate');
-    const storedQuote = localStorage.getItem('dailyQuote');
-
-    if (storedDate === today && storedQuote) {
-      setDailyQuote(JSON.parse(storedQuote));
-    } else {
-      const randomIndex = Math.floor(Math.random() * QUOTES.length);
-      const newQuote = QUOTES[randomIndex];
-      localStorage.setItem('quoteDate', today);
-      localStorage.setItem('dailyQuote', JSON.stringify(newQuote));
-      setDailyQuote(newQuote);
-    }
+    return () => clearTimeout(timeout);
   }, []);
 
 
@@ -135,38 +71,11 @@ export default function Footer() {
           </motion.div>
         )}
 
-        {/* Visitor Counter */}
-        <div className="flex justify-center px-2 mb-12">
-          {visitorCount !== null ? (
-            <div className="flex flex-col items-center gap-2 px-4 py-3 transition-colors duration-300 border rounded-full sm:flex-row sm:gap-3 sm:px-6 border-blue-500/30 bg-blue-500/10 backdrop-blur-md">
-              <Eye className="w-5 h-5 text-blue-400 shrink-0" />
-              <span className="text-xs font-medium text-center sm:text-sm text-gray-300 sm:text-left">
-                You are the <span className="font-bold text-blue-300">{visitorCount.toLocaleString()}</span>
-                <sup className="text-xs">th</sup> visitor
-              </span>
-            </div>
-          ) : visitorError ? (
-            <div className="flex flex-col items-center gap-2 px-4 py-3 transition-colors duration-300 border rounded-full sm:flex-row sm:gap-3 sm:px-6 border-amber-500/30 bg-amber-600/10 backdrop-blur-md">
-              <Eye className="w-5 h-5 shrink-0 text-amber-300" />
-              <span className="text-xs font-medium text-center sm:text-sm text-amber-200 sm:text-left">
-                Visitor counter unavailable
-                <br className="sm:hidden" />
-                ({visitorError})
-              </span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 px-4 py-3">
-              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-              <span className="text-xs font-medium sm:text-sm text-gray-400">Loading visitor counter...</span>
-            </div>
-          )}
-        </div>
-
         {/* Divider */}
         <div className="h-px mb-8 transition-colors duration-300 bg-linear-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
 
         {/* Bottom */}
-        <div className="flex flex-col items-center justify-center gap-4 text-xs sm:text-sm text-gray-300">
+        <div className="flex flex-col items-center justify-center gap-4 text-xs text-gray-300 sm:text-sm">
           <p className="text-center">
             Design &amp; Developed by <span className="font-semibold text-slate-100">Gopal~Codes</span>
           </p>

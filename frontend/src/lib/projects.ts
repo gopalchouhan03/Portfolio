@@ -355,5 +355,46 @@ export const projectsData: Project[] = [
     ],
 
     relatedProjectIds: [1, 2]
+  },
+  {
+    id: 7,
+    title: 'Shree Radhe Garba Collections',
+    description: 'A storefront concept for an Indore-based Garba clothing shop, showcasing Gujarati craft and Navratri collections.',
+    longDescription:
+      'Shree Radhe Garba Collections is a storefront experience concept for a local clothing shop in Bhawarkua, Indore. The design highlights colorful Garba outfits and Gujarati mirror-work craftsmanship, with clear paths to explore the collection or visit the shop and book an in-store experience.',
+    tags: ['E-commerce', 'Fashion', 'Local Retail'],
+    status: 'Design Concept',
+    statusColor: 'bg-purple-500/20 text-purple-400',
+    cover: '/images/projects/Shree_Radhe_Garba_Collections.png',
+    demo: 'https://srgc.vercel.app/',
+    github: 'https://github.com/gopalchouhan03/SRGC',
+    features: [
+      'Navratri and Garba collection storefront',
+      'Gujarati craft and mirror-work presentation',
+      'Shop visit and booking call to action',
+      'In-store try-on and alteration information',
+      'Bhawarkua, Indore shop location details'
+    ],
+    overview:
+      'A storefront design concept for Shree Radhe Garba Collections, focused on presenting traditional Garba fashion and making the local shop experience easy to discover.',
+    whatUsersCan: [
+      'Explore Garba clothing collections',
+      'Learn about Gujarati craft and mirror-work styles',
+      'Find the shop in Bhawarkua, Indore',
+      'See information about in-store try-ons and alterations',
+      'Follow a call to visit the shop and book'
+    ],
+    whyBuilt: [
+      'Give a local Garba clothing shop a clear online presence',
+      'Showcase traditional Gujarati craft and festive collections',
+      'Help customers discover the in-store shopping experience'
+    ],
+    techStack: [],
+    futureParams: [
+      'Add a browsable product catalog with sizes and pricing',
+      'Connect shop visits to an online appointment request',
+      'Add contact details and directions for customers'
+    ],
+    relatedProjectIds: []
   }
 ];

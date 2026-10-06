@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Inter, Sora, JetBrains_Mono } from 'next/font/google';
 import "./globals.css";
 import { LayoutClient } from "./layout-client";
@@ -33,7 +34,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Gopal - A Full Stack Developer | Portfolio",
-  description: " A Full Stack web developer specializing in JavaScript, React, Node.js, and premium UI design. View my work, blogs, and projects.",
+  description: " A Full Stack web developer specializing in JavaScript, React, Node.js, and premium UI design. View my work and projects.",
   keywords: ["developer", "portfolio", "react", "javascript", "nodejs", "full-stack", "web development"],
   authors: [{ name: "Gopal Chouhan" }],
   creator: "Gopal Chouhan",
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Gopal - A Full Stack Developer | Portfolio",
-    description: "A Full Stack web developer specializing in JavaScript, React, Node.js, and premium UI design. View my work, blogs, and projects.",
+    description: "A Full Stack web developer specializing in JavaScript, React, Node.js, and premium UI design. View my work and projects.",
     type: "website",
     locale: "en_US",
     url: "https://yourportfolio.com",
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Gopal - Full Stack Developer",
-    description: "A Full Stack web developer specializing in JavaScript, React, Node.js, and premium UI design. View my work, blogs, and projects.",
+    description: "A Full Stack web developer specializing in JavaScript, React, Node.js, and premium UI design. View my work and projects.",
   },
   robots: {
     index: true,
@@ -89,6 +90,7 @@ export default function RootLayout({
         <LayoutClient>
           {children}
         </LayoutClient>
+        <Analytics />
       </body>
     </html>
   );

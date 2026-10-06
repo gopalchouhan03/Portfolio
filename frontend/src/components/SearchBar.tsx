@@ -9,7 +9,7 @@ interface SearchSuggestion {
   id: string;
   title: string;
   description: string;
-  type: 'project' | 'blog' | 'skill' | 'section';
+  type: 'project' | 'skill' | 'section';
   href: string;
   icon?: string;
 }
@@ -29,21 +29,6 @@ const suggestions: SearchSuggestion[] = [
     description: 'Browse complete portfolio of work',
     type: 'project',
     href: '/projects',
-  },
-  // Blogs
-  {
-    id: 'blog-1',
-    title: 'MERN Stack for Freshers',
-    description: 'Real-world MERN stack project structure',
-    type: 'blog',
-    href: '/blogs/1',
-  },
-  {
-    id: 'blog-2',
-    title: 'View All Blogs',
-    description: 'Browse dev articles and insights',
-    type: 'blog',
-    href: '/blogs',
   },
   // Skills
   {
@@ -79,20 +64,6 @@ const suggestions: SearchSuggestion[] = [
     id: 'section-1',
     title: 'About Me',
     description: 'Learn more about my background',
-    type: 'section',
-    href: '/',
-  },
-  {
-    id: 'section-2',
-    title: 'GitHub Contributions',
-    description: 'View my contribution activity',
-    type: 'section',
-    href: '#github',
-  },
-  {
-    id: 'section-3',
-    title: 'Life & Setup',
-    description: 'My development environment',
     type: 'section',
     href: '/',
   },
@@ -162,21 +133,10 @@ export default function SearchBar() {
   const getTypeIcon = (type: SearchSuggestion['type']) => {
     const icons = {
       project: '📁',
-      blog: '📝',
       skill: '⚡',
       section: '📍',
     };
     return icons[type];
-  };
-
-  const getTypeBgColor = (type: SearchSuggestion['type']) => {
-    const colors = {
-      project: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-      blog: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-      skill: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
-      section: 'bg-green-500/20 text-green-300 border-green-500/30',
-    };
-    return colors[type];
   };
 
   return (
@@ -211,7 +171,7 @@ export default function SearchBar() {
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder="Search projects, blogs, skills..."
+                  placeholder="Search projects or skills..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full text-sm text-white placeholder-gray-500 bg-transparent outline-none"
@@ -235,7 +195,7 @@ export default function SearchBar() {
               {filteredSuggestions.length > 0 ? (
                 <div className="p-2">
                   {/* Group suggestions by type */}
-                  {['project', 'blog', 'skill', 'section'].map((type) => {
+                  {['project', 'skill', 'section'].map((type) => {
                     const grouped = filteredSuggestions.filter(
                       (s) => s.type === type
                     ) as SearchSuggestion[];
@@ -246,7 +206,6 @@ export default function SearchBar() {
                       <div key={type}>
                         <div className="px-2 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                           {type === 'project' && '📁 Projects'}
-                          {type === 'blog' && '📝 Blogs'}
                           {type === 'skill' && '⚡ Skills'}
                           {type === 'section' && '📍 Sections'}
                         </div>
@@ -289,7 +248,7 @@ export default function SearchBar() {
                     No results found for &quot;{searchQuery}&quot;
                   </p>
                   <p className="mt-2 text-xs text-gray-500">
-                    Try searching for projects, blogs, or skills
+                    Try searching for projects or skills
                   </p>
                 </div>
               )}

@@ -2,11 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import SetupSection from '@/components/SetupSection';
-import LifeSection from '@/components/LifeSection';
-import BlogsSection from '@/components/BlogsSection';
 import CTASection from '@/components/CTASection';
-import GitHubSection from '@/components/GitHubSection';
 import Footer from '@/components/Footer';
 import CustomCursor from '@/components/CustomCursor';
 import { useEffect } from 'react';
@@ -47,30 +43,29 @@ export default function Home() {
         <AboutMeSection />
       </section>
 
-      {/* GitHub Section */}
+      {/*
+      Temporarily hidden sections:
       <section id="github">
         <GitHubSection />
       </section>
-
-      {/* Blogs Section */}
       <section id="blogs">
         <BlogsSection />
       </section>
+      */}
 
       {/* Call to Action */}
       <section id="cta">
         <CTASection />
       </section>
 
-      {/* Setup Section */}
+      {/*
       <section id="setup">
         <SetupSection />
       </section>
-
-      {/* Life Section */}
       <section id="life">
         <LifeSection />
       </section>
+      */}
 
       {/* Footer */}
       <Footer />
